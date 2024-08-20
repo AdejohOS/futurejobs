@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,27 +17,44 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
-const formSchema = z.object({
-  role: z.string(),
-});
+import { UpdateRoleSchema, UpdateRoleValues } from "@/lib/zodValidation";
+import { updateRole } from "@/actions/actions";
+import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 const RoleForm = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      role: "",
-    },
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const form = useForm<UpdateRoleValues>({
+    resolver: zodResolver(UpdateRoleSchema),
   });
 
-  const updateRole = () => {
+  const updateRoleSubmit = async (data: UpdateRoleValues) => {
+    setIsLoading(true);
     try {
-    } catch (error) {}
+      await updateRole(data);
+      toast({
+        title: "Role update",
+        description: "Your role has been updated successfully",
+      });
+    } catch (error) {
+      toast({
+        description: "Something went wrong",
+      });
+    } finally {
+      setIsLoading(false);
+      router.push("/settings");
+    }
   };
 
   return (
     <Form {...form}>
-      <form action="" className="space-y-4 mt-4">
+      <form
+        onSubmit={form.handleSubmit(updateRoleSubmit)}
+        action=""
+        className="space-y-4 mt-4"
+      >
         <FormField
           control={form.control}
           name="role"
@@ -52,7 +69,7 @@ const RoleForm = () => {
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="all" className="w-6 h-6" />
+                      <RadioGroupItem value="TALENT" className="w-6 h-6" />
                     </FormControl>
                     <FormLabel className="font-semibold text-l">
                       Talent
@@ -60,7 +77,7 @@ const RoleForm = () => {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="mentions" className="w-6 h-6" />
+                      <RadioGroupItem value="RECRUITER" className="w-6 h-6" />
                     </FormControl>
                     <FormLabel className="font-semibold text-l">
                       Recruiter
@@ -72,8 +89,12 @@ const RoleForm = () => {
             </FormItem>
           )}
         />
-        <Button variant="theme" type="submit" className="">
-          Submit
+        <Button
+          variant="theme"
+          type="submit"
+          className=" flex items-center gap-2"
+        >
+          {isLoading && <Loader className="animate-spin w-5 h-5" />} Update
         </Button>
       </form>
     </Form>

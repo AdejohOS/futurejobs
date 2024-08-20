@@ -6,11 +6,18 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Briefcase, TriangleAlert } from "lucide-react";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async () => {
+  const user = await currentUser();
+  if (["TALENT", "RECRUITER"].includes(user?.role!)) {
+    redirect("/settings");
+  }
+
   return (
     <section className="container mx-auto">
       <div className="max-w-[700px] mx-auto my-20">

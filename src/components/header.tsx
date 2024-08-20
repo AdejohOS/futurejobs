@@ -1,4 +1,4 @@
-import { Loader, LogIn, NotebookPen } from "lucide-react";
+import { Briefcase, Building, Loader, LogIn, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
@@ -14,11 +14,21 @@ const Header = async () => {
           FutureJobs
         </Link>
         <div className="flex items-center gap-4">
-          <Link href="/createjob">
-            <Button variant="theme" className="flex gap-2">
-              <NotebookPen className="shrink-0 h-4 w-4" /> Post a job
-            </Button>
-          </Link>
+          {user?.role === "RECRUITER" && (
+            <>
+              <Link href="/company">
+                <Button variant="outline" className="flex gap-2">
+                  <Building className="shrink-0 h-4 w-4" /> Companies
+                </Button>
+              </Link>
+              <Link href="/createjob">
+                <Button variant="theme" className="flex gap-2">
+                  <Briefcase className="shrink-0 h-4 w-4" /> Jobs
+                </Button>
+              </Link>
+            </>
+          )}
+
           {user ? (
             <UserMenu />
           ) : (

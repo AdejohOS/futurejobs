@@ -1,18 +1,15 @@
-"use client";
 import React from "react";
-import { useSession } from "next-auth/react";
 import { currentUser } from "@/lib/auth";
-import { useCurrentUser } from "@/hooks/getCurrentUser";
-import { useRouter } from "next/navigation";
 
-const page = () => {
-  const user = useCurrentUser();
-  const router = useRouter();
+import { redirect } from "next/navigation";
+
+const page = async () => {
+  const user = await currentUser();
 
   if (!["TALENT", "RECRUITER"].includes(user?.role!)) {
-    return router.push("/role");
+    redirect("/role");
   }
-  return <div>hello</div>;
+  return <div>hello Settings</div>;
 };
 
 export default page;
