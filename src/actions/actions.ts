@@ -26,7 +26,8 @@ export const createCompanyAction = async (data: CompanyValues) => {
     return { error: "Innnvalid Fields" };
   }
 
-  const { name, website, address, location, about } = validatedFields.data;
+  const { name, website, address, location, about, logoUrl } =
+    validatedFields.data;
 
   await db.company.create({
     data: {
@@ -34,6 +35,7 @@ export const createCompanyAction = async (data: CompanyValues) => {
       location,
       website,
       address,
+      logoUrl,
       about,
       userId: user.id!,
     },
@@ -43,6 +45,25 @@ export const createCompanyAction = async (data: CompanyValues) => {
   redirect("/company");
 };
 
+//Delete company
+export const deleteCompanyAction = async (companyId: string) => {
+  const user = await currentUser();
+
+  if (user?.role !== "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  await db.company.delete({
+    where: {
+      id: companyId,
+      userId: user.id,
+    },
+  });
+
+  revalidatePath("/company");
+};
+
+// Update user role
 export const updateRole = async (data: UpdateRoleValues) => {
   const userId = await currentUserId();
 

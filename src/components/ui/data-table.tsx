@@ -10,6 +10,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  ColumnHelper,
 } from "@tanstack/react-table";
 
 import {

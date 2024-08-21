@@ -6,33 +6,32 @@ import { ArrowBigLeft, Cross, Plus } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { CompanyClient } from "./_components/client";
+import { TitleHeadings } from "@/components/titleHeadings";
+import { currentUserId } from "@/lib/auth";
+import { format } from "date-fns";
 
 const page = async () => {
-  const companies = await db.company.findMany();
+  const userId = await currentUserId();
+  const companies = await db.company.findMany({
+    where: {
+      userId: userId,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   const formattedCompany: CompanyColumn[] = companies.map((company) => ({
     id: company.id,
     name: company.name,
+    logoUrl: company.logoUrl!,
+    createdAt: format(company.createdAt, "MMMM do, yyyy"),
   }));
 
   return (
     <section>
       <div className="container m-auto my-12">
-        <div className="flex justify-between">
-          <Link href="/">
-            <Button variant="secondary" className="flex items-center gap-2">
-              <ArrowBigLeft className="h-4 w-4" /> Home
-            </Button>
-          </Link>
-          <Link href="/company/new">
-            <Button variant="theme" className="flex items-center gap-2">
-              <Plus className="h-4 w-4" /> New Company
-            </Button>
-          </Link>
-        </div>
-        <div className="container mx-auto py-5">
-          <CompanyClient data={formattedCompany} />
-        </div>
+        <CompanyClient data={formattedCompany} />
       </div>
     </section>
   );

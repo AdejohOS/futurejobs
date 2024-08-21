@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { CompanyColumn } from "./columns";
 import {
   DropdownMenu,
@@ -11,14 +11,27 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import AlertModal from "@/components/modals/alertModal";
+import { useRouter } from "next/navigation";
 
 interface CellActionProps {
   data: CompanyColumn;
 }
 
 export const CellAction = ({ data }: CellActionProps) => {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  const onConfirm = () => {};
   return (
     <>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onConfirm}
+        loading={loading}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost">
@@ -28,10 +41,10 @@ export const CellAction = ({ data }: CellActionProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`company/${data.id}`)}>
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
