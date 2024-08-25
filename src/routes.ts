@@ -18,9 +18,28 @@ export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
  * @type {string}
  */
 export const apiAuthPrefix = "/api/auth";
+/**
+ * The prefix for Recruiter authentication routes
+ * Routes that start with this prefix are used for Recruiter authentication purposes
+ * @type {string}
+ */
+export const recruiterPrefix = "/recruiter";
+
+/**
+ * The prefix for Talent authentication routes
+ * Routes that start with this prefix are used for Talent authentication purposes
+ * @type {string}
+ */
+export const talentPrefix = "/talent";
 
 /**
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/settings";
+export const DEFAULT_LOGIN_REDIRECT = "/";
+
+/**
+ * The default redirect path to confirm role after login
+ * @type {string}
+ */
+export const UPDATE_ROLE_REDIRECT = "/role";

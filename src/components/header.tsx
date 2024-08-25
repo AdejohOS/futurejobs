@@ -16,13 +16,13 @@ const Header = async () => {
         <div className="flex items-center gap-4">
           {user?.role === "RECRUITER" && (
             <>
-              <Link href="/company">
-                <Button variant="outline" className="flex gap-2">
+              <Link href="/recruiter/company">
+                <Button variant="secondary" className="flex gap-2 drop-shadow">
                   <Building className="shrink-0 h-4 w-4" /> Companies
                 </Button>
               </Link>
-              <Link href="/createjob">
-                <Button variant="theme" className="flex gap-2">
+              <Link href="/recruiter/job">
+                <Button variant="theme" className="flex gap-2 drop-shadow">
                   <Briefcase className="shrink-0 h-4 w-4" /> Jobs
                 </Button>
               </Link>
@@ -33,7 +33,7 @@ const Header = async () => {
             <UserMenu />
           ) : (
             <Link href="/auth/login">
-              <Button variant="outline" className="flex gap-2">
+              <Button variant="secondary" className="flex gap-2 drop-shadow">
                 <LogIn className="shrink-0 h-4 w-4" /> Signin / Signup
               </Button>
             </Link>

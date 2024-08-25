@@ -21,7 +21,7 @@ const Hero = () => {
         className="mt-6 text-center flex items-center max-w-prose mx-auto"
       >
         <Input
-          className="rounded-l-full border-r-0"
+          className="rounded-l-full rounded-r-none border-r-0"
           type="search"
           placeholder="Search jobs..."
         />

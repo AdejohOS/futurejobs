@@ -9,6 +9,7 @@ import {
 } from "@/lib/zodValidation";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import cloudinary from "@/lib/cloudinary";
 
 // Create company
 export const createCompanyAction = async (data: CompanyValues) => {
@@ -41,8 +42,60 @@ export const createCompanyAction = async (data: CompanyValues) => {
     },
   });
 
-  revalidatePath("/company/new");
-  redirect("/company");
+  revalidatePath("/recruiter/company/create");
+  redirect("/recruiter/company");
+};
+
+// update company
+export const updateCompanyAction = async (
+  companyId: string,
+  data: CompanyValues
+) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Forbidden Server Action" };
+  }
+  if (user?.role !== "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  const company = await db.company.findUnique({
+    where: {
+      id: companyId,
+      userId: user.id,
+    },
+  });
+
+  if (!company) {
+    return { error: "Company not found" };
+  }
+
+  const validatedFields = CompanySchema.safeParse(data);
+  if (!validatedFields.success) {
+    return { error: "Invalid Fields" };
+  }
+
+  const { name, website, address, location, about, logoUrl } =
+    validatedFields.data;
+
+  await db.company.update({
+    where: {
+      id: companyId,
+      userId: user.id,
+    },
+    data: {
+      name,
+      website,
+      address,
+      location,
+      about,
+      logoUrl,
+    },
+  });
+
+  revalidatePath("/recruiter/company");
+  redirect("/recruiter/company");
 };
 
 //Delete company
@@ -53,6 +106,25 @@ export const deleteCompanyAction = async (companyId: string) => {
     return { error: "Forbidden Server Action" };
   }
 
+  const company = await db.company.findUnique({
+    where: {
+      id: companyId,
+      userId: user.id,
+    },
+  });
+
+  if (!company) {
+    return { error: "Company not found!" };
+  }
+
+  // delete img from cloudinary
+  if (company.logoUrl) {
+    await cloudinary.uploader.destroy(company.logoUrl, {
+      invalidate: true,
+      resource_type: "image",
+    });
+  }
+
   await db.company.delete({
     where: {
       id: companyId,
@@ -60,7 +132,8 @@ export const deleteCompanyAction = async (companyId: string) => {
     },
   });
 
-  revalidatePath("/company");
+  revalidatePath("/recruiter/company");
+  redirect("/recruiter/company");
 };
 
 // Update user role
@@ -86,7 +159,7 @@ export const updateRole = async (data: UpdateRoleValues) => {
     },
   });
   revalidatePath("/role");
-  redirect("/settings");
+  redirect("/");
 
   return { success: "Role updated successfully!" };
 };

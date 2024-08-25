@@ -15,7 +15,7 @@ const CompanyDetails = async ({
   return (
     <section>
       <div className="container m-auto my-12">
-        <CompanyForm initialData={company!} />
+        <CompanyForm initialData={company!} companyId={company?.id} />
       </div>
     </section>
   );

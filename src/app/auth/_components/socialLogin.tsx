@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, UPDATE_ROLE_REDIRECT } from "@/routes";
 import { useRouter } from "next/navigation";
 
 const SocialLogin = () => {
@@ -16,8 +16,7 @@ const SocialLogin = () => {
   const githubLogin = () => {
     setLoading(true);
     try {
-      signIn("github");
-      router.push(DEFAULT_LOGIN_REDIRECT);
+      signIn("github", { callbackUrl: UPDATE_ROLE_REDIRECT });
     } catch (error) {
     } finally {
       setLoading(false);
@@ -26,8 +25,7 @@ const SocialLogin = () => {
   const googleLogin = () => {
     setLoading(true);
     try {
-      signIn("google");
-      router.push(DEFAULT_LOGIN_REDIRECT);
+      signIn("google", { callbackUrl: UPDATE_ROLE_REDIRECT });
     } catch (error) {
       console.log("Error logging in");
     } finally {

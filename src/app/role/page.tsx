@@ -15,7 +15,7 @@ import React from "react";
 const page = async () => {
   const user = await currentUser();
   if (["TALENT", "RECRUITER"].includes(user?.role!)) {
-    redirect("/settings");
+    redirect("/");
   }
 
   return (

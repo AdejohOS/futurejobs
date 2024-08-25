@@ -5,12 +5,15 @@ import {
   publicRoutes,
   authRoutes,
   apiAuthPrefix,
+  recruiterPrefix,
+  talentPrefix,
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 
-import { auth as middleware } from "@/auth";
+import { auth } from "@/auth";
+import { currentRole } from "./lib/auth";
 
-export default middleware((req) => {
+export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
@@ -19,6 +22,9 @@ export default middleware((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  const isRecruiterRoute = nextUrl.pathname.startsWith(recruiterPrefix);
+  const isTalentRoute = nextUrl.pathname.startsWith(talentPrefix);
+
   //providers
   if (isApiAuthRoute) {
     return;
@@ -26,6 +32,19 @@ export default middleware((req) => {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return;
+  }
+
+  if (isRecruiterRoute) {
+    if (req.auth?.user.role !== "RECRUITER") {
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+    return;
+  }
+  if (isTalentRoute) {
+    if (req.auth?.user.role !== "TALENT") {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
     return;

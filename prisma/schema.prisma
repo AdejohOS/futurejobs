@@ -51,6 +51,7 @@ model User {
   role UserRole @default(USER)
 
   companies Company[]
+  jobs Job[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -64,13 +65,40 @@ model Company {
   website String?
   address String?
   location String?
-  logoUrl String?
+  logoUrl String
 
+  jobs Job[]
+
+//creator
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Job {
+  id String @id @default(cuid())
+  title String
+  description String?
+  requirement String?
+  salary Int?
+  experienceLevel Int?
+  location String?
+  jobType String?
+  position Int?
+
+  companyId String
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+//creator
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
 }
 
  

@@ -13,6 +13,6 @@ export const CompanySchema = z.object({
   website: z.string().optional(),
   address: z.string().optional(),
   location: z.string().optional(),
-  logoUrl: z.string().optional(),
+  logoUrl: z.string(),
 });
 export type CompanyValues = z.infer<typeof CompanySchema>;

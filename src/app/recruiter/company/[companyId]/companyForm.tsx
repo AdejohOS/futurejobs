@@ -1,8 +1,14 @@
 "use client";
-import { createCompanyAction } from "@/actions/actions";
+
+import {
+  createCompanyAction,
+  deleteCompanyAction,
+  updateCompanyAction,
+} from "@/actions/actions";
 import { ImageUpload } from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useParams } from "next/navigation";
 import {
   Form,
   FormControl,
@@ -17,18 +23,21 @@ import { toast } from "@/components/ui/use-toast";
 import { CompanySchema, CompanyValues } from "@/lib/zodValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Company } from "@prisma/client";
-import { Loader } from "lucide-react";
+import { Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import AlertModal from "@/components/modals/alertModal";
 
 interface CompanyFormProps {
   initialData: Company;
+  companyId?: string;
 }
 
-const CompanyForm = ({ initialData }: CompanyFormProps) => {
+const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const title = initialData ? "Edit company" : "Register a new company";
   const description = initialData
@@ -51,32 +60,73 @@ const CompanyForm = ({ initialData }: CompanyFormProps) => {
     },
   });
 
-  const createCompany = async (data: CompanyValues) => {
-    setIsLoading(true);
+  const isLoading = form.formState.isSubmitting;
+
+  const createUpdateCompany = async (data: CompanyValues) => {
     try {
-      await createCompanyAction(data);
+      if (initialData) {
+        await updateCompanyAction(companyId!, data);
+        toast({
+          title: toastMessage,
+        });
+      } else {
+        await createCompanyAction(data);
+        toast({
+          title: toastMessage,
+        });
+      }
+    } catch (error) {
       toast({
-        description: toastMessage,
+        title: "Something went wrong!",
+        description: "Please try again.",
+      });
+    }
+  };
+
+  const onDelete = async () => {
+    setLoading(true);
+    try {
+      await deleteCompanyAction(companyId!);
+      toast({
+        title: "Company deleted successfully!",
       });
     } catch (error) {
       toast({
         title: "Something went wrong!",
-        description: "Please try again later.",
+        description: "please try again later.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
+
   return (
     <div>
-      <div className="mb-4">
-        <h2 className="text-xl font-bold">{title}</h2>
-        <p>{description}</p>
+      <AlertModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onDelete}
+        loading={loading}
+      />
+
+      <div className="flex justify-between mb-4">
+        <div>
+          <h2 className="text-xl font-bold">{title}</h2>
+          <p>{description}</p>
+        </div>
+        {initialData && (
+          <Button
+            onClick={() => setOpen(true)}
+            variant="destructive"
+            className="flex items-center gap-2"
+          >
+            <Trash className="w-4 h-4" />
+            Delete
+          </Button>
+        )}
       </div>
       <Card className="p-4 shadow-md">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(createCompany)}
+            onSubmit={form.handleSubmit(createUpdateCompany)}
             className="space-y-4"
             action="
       "
@@ -202,7 +252,7 @@ const CompanyForm = ({ initialData }: CompanyFormProps) => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => router.push("/company")}
+                onClick={() => router.push("/recruiter/company")}
                 disabled={isLoading}
               >
                 Cancel
@@ -210,11 +260,11 @@ const CompanyForm = ({ initialData }: CompanyFormProps) => {
               <Button
                 type="submit"
                 variant="theme"
-                className="flex items-center gap-2"
+                className="space-x-2"
                 disabled={isLoading}
               >
                 {isLoading && <Loader className="h-5 w-5 animate-spin" />}
-                {action}
+                <span>{action}</span>
               </Button>
             </div>
           </form>

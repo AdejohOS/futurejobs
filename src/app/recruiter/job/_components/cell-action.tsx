@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CompanyColumn } from "./columns";
+import { JobColumn } from "./columns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,7 @@ import AlertModal from "@/components/modals/alertModal";
 import { useRouter } from "next/navigation";
 
 interface CellActionProps {
-  data: CompanyColumn;
+  data: JobColumn;
 }
 
 export const CellAction = ({ data }: CellActionProps) => {
@@ -23,7 +23,11 @@ export const CellAction = ({ data }: CellActionProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  const onConfirm = () => {};
+  const onConfirm = () => {
+    setLoading(true);
+    try {
+    } catch (error) {}
+  };
   return (
     <>
       <AlertModal
@@ -41,7 +45,9 @@ export const CellAction = ({ data }: CellActionProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => router.push(`company/${data.id}`)}>
+          <DropdownMenuItem
+            onClick={() => router.push(`/recruiter/job/${data.id}`)}
+          >
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
