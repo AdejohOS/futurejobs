@@ -10,9 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import AlertModal from "@/components/modals/alertModal";
 import { useRouter } from "next/navigation";
+import { deleteJobActionConfirm } from "@/actions/actions";
+import { toast } from "@/components/ui/use-toast";
 
 interface CellActionProps {
   data: JobColumn;
@@ -23,10 +25,21 @@ export const CellAction = ({ data }: CellActionProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  const onConfirm = () => {
+  const onConfirm = async () => {
     setLoading(true);
+    await deleteJobActionConfirm(data.id);
+    toast({
+      title: "Job deleted successfully!",
+    });
     try {
-    } catch (error) {}
+    } catch (error) {
+      toast({
+        title: "Something went wrong!",
+        description: "Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -49,6 +62,11 @@ export const CellAction = ({ data }: CellActionProps) => {
             onClick={() => router.push(`/recruiter/job/${data.id}`)}
           >
             <Edit className="mr-2 h-4 w-4" /> Update
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => router.push(`/recruiter/job/${data.id}`)}
+          >
+            <Eye className="mr-2 h-4 w-4" /> Applicants
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete

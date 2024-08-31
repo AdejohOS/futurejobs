@@ -16,3 +16,16 @@ export const CompanySchema = z.object({
   logoUrl: z.string(),
 });
 export type CompanyValues = z.infer<typeof CompanySchema>;
+
+export const JobSchema = z.object({
+  title: z.string().min(1, "Minimum of one character allowed"),
+  companyId: z.string(),
+  description: z.string(),
+  requirement: z.string(),
+  salary: z.coerce.number().min(1),
+  location: z.string(),
+  position: z.coerce.number().min(1),
+  jobType: z.string(),
+  experienceLevel: z.coerce.number().min(1),
+});
+export type JobValues = z.infer<typeof JobSchema>;

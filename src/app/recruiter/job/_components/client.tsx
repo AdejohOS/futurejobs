@@ -18,13 +18,13 @@ export const JobClient = ({ data }: JobClientProps) => {
           title={`Jobs (${data.length})`}
           description="Manage your jobs."
         />
-        <Link href="/recruiter/company/create">
+        <Link href="/recruiter/job/create">
           <Button variant="theme" className="flex items-center gap-2">
             <Plus className="h-4 w-4" /> New Job
           </Button>
         </Link>
       </div>
-      <DataTable columns={columns} data={data} searchKey="name" />
+      <DataTable columns={columns} data={data} searchKey="title" />
     </>
   );
 };

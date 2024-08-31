@@ -4,12 +4,16 @@ import { db } from "@/lib/db";
 import {
   CompanySchema,
   CompanyValues,
+  JobSchema,
+  JobValues,
   UpdateRoleSchema,
   UpdateRoleValues,
 } from "@/lib/zodValidation";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/lib/cloudinary";
+import { isFunction } from "util";
+import { error } from "console";
 
 // Create company
 export const createCompanyAction = async (data: CompanyValues) => {
@@ -102,6 +106,10 @@ export const updateCompanyAction = async (
 export const deleteCompanyAction = async (companyId: string) => {
   const user = await currentUser();
 
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
   if (user?.role !== "RECRUITER") {
     return { error: "Forbidden Server Action" };
   }
@@ -128,6 +136,40 @@ export const deleteCompanyAction = async (companyId: string) => {
   await db.company.delete({
     where: {
       id: companyId,
+      userId: user.id,
+    },
+  });
+
+  revalidatePath("/recruiter/company");
+  redirect("/recruiter/company");
+};
+export const deleteCompanyActionConfirm = async (data: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
+  if (user?.role !== "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  const company = await db.company.findUnique({
+    where: {
+      id: data,
+      userId: user.id,
+    },
+  });
+
+  if (!company) {
+    return { error: "Company not found!" };
+  }
+
+  // delete img from cloudinary
+
+  await db.company.delete({
+    where: {
+      id: data,
       userId: user.id,
     },
   });
@@ -162,4 +204,227 @@ export const updateRole = async (data: UpdateRoleValues) => {
   redirect("/");
 
   return { success: "Role updated successfully!" };
+};
+
+// create job
+
+export const createJobAction = async (data: JobValues) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
+  if (user.role !== "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  const validatedFields = JobSchema.safeParse(data);
+  if (!validatedFields.success) {
+    return { error: "Invalid Fields" };
+  }
+
+  const {
+    title,
+    companyId,
+    description,
+    requirement,
+    salary,
+    location,
+    experienceLevel,
+    jobType,
+    position,
+  } = validatedFields.data;
+
+  await db.job.create({
+    data: {
+      title,
+      companyId,
+      description,
+      requirement,
+      salary,
+      location,
+      experienceLevel,
+      jobType,
+      position,
+      userId: user.id!,
+    },
+  });
+
+  revalidatePath("/recruiter/job");
+  redirect("/recruiter/job");
+};
+
+// updateJob
+export const updateJobAction = async (data: JobValues, jobId: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
+  if (user.role! === "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  const validatedFields = JobSchema.safeParse(data);
+
+  if (!validatedFields.success) {
+    return { error: "Invalid Fields" };
+  }
+
+  const {
+    title,
+    companyId,
+    description,
+    requirement,
+    salary,
+    location,
+    experienceLevel,
+    jobType,
+    position,
+  } = validatedFields.data;
+
+  await db.job.update({
+    where: {
+      id: jobId,
+      userId: user.id,
+    },
+    data: {
+      title,
+      companyId,
+      description,
+      requirement,
+      salary,
+      location,
+      experienceLevel,
+      jobType,
+      position,
+    },
+  });
+
+  revalidatePath("/recruiter/job");
+  redirect("/recruiter/job");
+};
+
+// Delete Job
+export const deleteJobAction = async (jobId: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
+  if (user?.role !== "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  const job = await db.job.findUnique({
+    where: {
+      id: jobId,
+      userId: user.id,
+    },
+  });
+
+  if (!job) {
+    return { error: "Job not found!" };
+  }
+
+  // delete img from cloudinary
+
+  await db.job.delete({
+    where: {
+      id: jobId,
+      userId: user.id,
+    },
+  });
+
+  revalidatePath("/recruiter/job");
+  redirect("/recruiter/job");
+};
+
+export const deleteJobActionConfirm = async (data: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
+  if (user?.role !== "RECRUITER") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  const job = await db.job.findUnique({
+    where: {
+      id: data,
+      userId: user.id,
+    },
+  });
+
+  if (!job) {
+    return { error: "Job not found!" };
+  }
+
+  // delete img from cloudinary
+
+  await db.job.delete({
+    where: {
+      id: data,
+      userId: user.id,
+    },
+  });
+
+  revalidatePath("/recruiter/job");
+  redirect("/recruiter/job");
+};
+
+// Apply Job
+
+export const ApplyJobAction = async (job: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised Access" };
+  }
+
+  if (user?.role !== "TALENT") {
+    return { error: "Forbidden Server Action" };
+  }
+
+  try {
+    const myJob = await db.job.findUnique({
+      where: {
+        id: job,
+      },
+    });
+
+    if (!myJob) {
+      return { error: "Job does not exist" };
+    }
+
+    const existingApplication = await db.job.findUnique({
+      where: {
+        id: job,
+        userId: user.id,
+      },
+    });
+
+    if (existingApplication) {
+      await db.job.delete({
+        where: {
+          id: existingApplication.id,
+        },
+      });
+
+      return { status: "deleted" };
+    } else {
+      await db.application.create({
+        data: {
+          userId: user.id!,
+          jobId: job,
+        },
+      });
+      return { status: "applied" };
+    }
+  } catch (error) {}
 };

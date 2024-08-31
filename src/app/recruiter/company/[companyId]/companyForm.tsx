@@ -39,14 +39,14 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const title = initialData ? "Edit company" : "Register a new company";
+  const title = initialData ? "Update company" : "Register a new company";
   const description = initialData
     ? "Edit the fields below to update your company."
     : "Fill out the fields below to register a company.";
   const action = initialData ? "Update" : "Register";
   const toastMessage = initialData
     ? "Company updated successfully."
-    : "Company created successfully.";
+    : "Company registered successfully.";
 
   const form = useForm<CompanyValues>({
     resolver: zodResolver(CompanySchema),
@@ -158,6 +158,7 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
                     <FormLabel>Company Website:</FormLabel>
                     <FormControl>
                       <Input
+                        type="url"
                         placeholder="https://www.example.com"
                         {...field}
                         disabled={isLoading}

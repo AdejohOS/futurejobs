@@ -28,6 +28,15 @@ const Header = async () => {
               </Link>
             </>
           )}
+          {user?.role === "TALENT" && (
+            <>
+              <Link href="/talent/jobs">
+                <Button variant="theme" className="flex gap-2 drop-shadow">
+                  <Briefcase className="shrink-0 h-4 w-4" /> Jobs
+                </Button>
+              </Link>
+            </>
+          )}
 
           {user ? (
             <UserMenu />

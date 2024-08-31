@@ -13,9 +13,13 @@ import { JobColumn, columns } from "./_components/columns";
 
 const page = async () => {
   const userId = await currentUserId();
+
   const jobs = await db.job.findMany({
     where: {
       userId: userId,
+    },
+    include: {
+      company: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -25,6 +29,7 @@ const page = async () => {
   const formattedJob: JobColumn[] = jobs.map((job) => ({
     id: job.id,
     title: job.title,
+    companyName: job.company.name,
     createdAt: job.createdAt,
   }));
 

@@ -13,6 +13,7 @@ import { CellAction } from "./cell-action";
 export type JobColumn = {
   id: string;
   title: string;
+  companyName: string;
   createdAt: Date;
 };
 
@@ -20,14 +21,18 @@ const columnHelper = createColumnHelper();
 
 export const columns: ColumnDef<JobColumn>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "companyName",
+    header: "Company Name:",
+  },
+  {
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name:
+          Role:
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
