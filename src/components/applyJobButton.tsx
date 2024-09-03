@@ -5,7 +5,7 @@ import { ApplyJobAction } from "@/actions/actions";
 
 interface ApplyJobButtonProps {
   jobId: string;
-  isApply?: boolean;
+  isApply: boolean;
 }
 const ApplyJobButton = ({
   jobId,

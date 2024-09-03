@@ -7,16 +7,15 @@ import { Clock, Heart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
-import ReactTimeAgo from "react-time-ago";
 
-interface JobItemProps {
+interface MyJobsProps {
   job: Job;
 }
 
-const JobItem = ({ job }: JobItemProps) => {
+const MyJobs = ({ job }: MyJobsProps) => {
   const router = useRouter();
   return (
-    <article className="bg-white rounded-md p-4">
+    <article className="bg-gray-100/80 rounded-md p-4 shadow">
       <div className="flex justify-between">
         <div className="flex gap-3">
           <div className="relative rounded-full drop-shadow-md bg-white shrink-0 p-2">
@@ -90,4 +89,4 @@ const JobItem = ({ job }: JobItemProps) => {
   );
 };
 
-export default JobItem;
+export default MyJobs;

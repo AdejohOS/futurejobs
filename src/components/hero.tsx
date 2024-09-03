@@ -3,6 +3,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { SearchIcon } from "lucide-react";
 import CategoryCarousel from "./categoryCarousel";
+import SearchField from "./searchField";
 
 const Hero = () => {
   return (
@@ -15,24 +16,7 @@ const Hero = () => {
         Start you hunt for the best life changing career opurtunities from here
         in your selected areas coviniently and get hired quickly!
       </p>
-
-      <form
-        action=""
-        className="mt-6 text-center flex items-center max-w-prose mx-auto"
-      >
-        <Input
-          className="rounded-l-full rounded-r-none border-r-0"
-          type="search"
-          placeholder="Search jobs..."
-        />
-        <Button
-          type="submit"
-          variant="theme"
-          className="border-l-0 rounded-l-none"
-        >
-          <SearchIcon className="text-white" />
-        </Button>
-      </form>
+      <SearchField />
     </section>
   );
 };

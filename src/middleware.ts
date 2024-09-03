@@ -7,6 +7,7 @@ import {
   apiAuthPrefix,
   recruiterPrefix,
   talentPrefix,
+  apiFetchPrefix,
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 
@@ -19,6 +20,8 @@ export default auth((req) => {
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
+  const isApiFetchRoute = nextUrl.pathname.startsWith(apiFetchPrefix);
+
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
@@ -27,6 +30,10 @@ export default auth((req) => {
 
   //providers
   if (isApiAuthRoute) {
+    return;
+  }
+
+  if (isApiFetchRoute) {
     return;
   }
 

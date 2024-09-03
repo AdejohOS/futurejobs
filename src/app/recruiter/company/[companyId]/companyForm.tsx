@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Company } from "@prisma/client";
 import { Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import AlertModal from "@/components/modals/alertModal";
 

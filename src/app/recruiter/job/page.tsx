@@ -10,6 +10,11 @@ import { TitleHeadings } from "@/components/titleHeadings";
 import { currentUserId } from "@/lib/auth";
 import Loading from "@/app/loading";
 import { JobColumn, columns } from "./_components/columns";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Recruiter company jobs",
+};
 
 const page = async () => {
   const userId = await currentUserId();

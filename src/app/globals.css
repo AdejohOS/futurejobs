@@ -12,6 +12,11 @@ body {
   @apply text-gray-800;
 }
 
+.custom-height {
+  @apply h-screen;
+  height: calc(100vh - 4rem);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

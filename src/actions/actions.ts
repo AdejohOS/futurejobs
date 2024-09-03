@@ -12,18 +12,17 @@ import {
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/lib/cloudinary";
-import { isFunction } from "util";
-import { error } from "console";
 
 // Create company
 export const createCompanyAction = async (data: CompanyValues) => {
   const user = await currentUser();
 
+  // user dont need to see this error
   if (!user) {
-    return { error: "Forbidden Server Action" };
+    throw Error("Unauthorised Server Action");
   }
   if (user?.role !== "RECRUITER") {
-    return { error: "Forbidden Server Action" };
+    throw Error("Forbidden Server Action");
   }
 
   const validatedFields = CompanySchema.safeParse(data);

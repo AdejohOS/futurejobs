@@ -18,6 +18,14 @@ export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
  * @type {string}
  */
 export const apiAuthPrefix = "/api/auth";
+
+/**
+ * The prefix for API  data fetch
+ * Routes that start with this prefix are used for to fetch data
+ * @type {string}
+ */
+export const apiFetchPrefix = "/api/jobs";
+
 /**
  * The prefix for Recruiter authentication routes
  * Routes that start with this prefix are used for Recruiter authentication purposes

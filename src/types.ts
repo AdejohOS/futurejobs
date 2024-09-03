@@ -21,7 +21,6 @@ export interface Job {
   salary: number;
   location: string;
   company: Company;
-  applications: Application[];
   createdAt: Date;
 }
 
@@ -29,4 +28,9 @@ export interface Application {
   id: string;
   userId: string;
   jobId: string;
+}
+
+export interface JobPage {
+  jobs: Job[];
+  nextCursor: string | null;
 }

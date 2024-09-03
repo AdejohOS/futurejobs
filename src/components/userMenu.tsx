@@ -16,9 +16,12 @@ import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { signOut } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 const UserMenu = () => {
   const user = useCurrentUser();
+
+  const queryClient = useQueryClient();
 
   return (
     <>
@@ -46,7 +49,10 @@ const UserMenu = () => {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            onClick={() => signOut()}
+            onClick={() => {
+              queryClient.clear;
+              signOut();
+            }}
             className="cursor-pointer"
           >
             <LogOut className="h-4 w-4 mr-2" />

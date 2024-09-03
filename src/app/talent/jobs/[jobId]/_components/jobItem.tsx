@@ -114,7 +114,7 @@ const JobItem = ({ job, applicationCount }: JobItemProps) => {
           <p>
             <span className="font-semibold">Description:</span>
           </p>
-          <Card className="p-4 max-w-[500px] text-muted-foreground">
+          <Card className="p-4 max-w-[500px] text-muted-foreground whitespace-pre-line break-words">
             {job.description}
           </Card>
         </div>

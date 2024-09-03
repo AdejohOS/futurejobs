@@ -9,6 +9,11 @@ import { CompanyClient } from "./_components/client";
 import { TitleHeadings } from "@/components/titleHeadings";
 import { currentUserId } from "@/lib/auth";
 import Loading from "@/app/loading";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Recruiter companies",
+};
 
 const page = async () => {
   const userId = await currentUserId();
