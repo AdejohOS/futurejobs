@@ -44,7 +44,7 @@ const MyJobs = ({ job }: MyJobsProps) => {
       </div>
       <div>
         <h2 className="font-bold text-xl py-4">{job.title}</h2>
-        <p>{job.description}</p>
+        <p className="line-clamp-1 break-all">{job.description}</p>
         <div className="flex gap-2 my-2">
           <p className="text-orange-600 font-semibold bg-orange-100 text-xs px-3 py-2 rounded-md">
             {job.position} Positions

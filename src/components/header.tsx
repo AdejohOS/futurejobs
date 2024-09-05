@@ -1,4 +1,11 @@
-import { Briefcase, Building, Loader, LogIn, NotebookPen } from "lucide-react";
+import {
+  Briefcase,
+  Building,
+  Loader,
+  LogIn,
+  NotebookPen,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
@@ -30,6 +37,11 @@ const Header = async () => {
           )}
           {user?.role === "TALENT" && (
             <>
+              <Link href="/talent/profile">
+                <Button variant="secondary" className="flex gap-2 drop-shadow">
+                  <User className="shrink-0 h-4 w-4" /> Profile
+                </Button>
+              </Link>
               <Link href="/talent/jobs">
                 <Button variant="theme" className="flex gap-2 drop-shadow">
                   <Briefcase className="shrink-0 h-4 w-4" /> Jobs

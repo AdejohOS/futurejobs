@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
 import ReactQueryProvider from "@/providers/reactQueryProvider";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
           <ReactQueryProvider>
             <Header />
             {children}
+            <Footer />
             <Toaster />
           </ReactQueryProvider>
         </body>

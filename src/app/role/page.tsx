@@ -8,6 +8,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { Briefcase, TriangleAlert } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -15,7 +16,7 @@ import React from "react";
 const page = async () => {
   const user = await currentUser();
   if (["TALENT", "RECRUITER"].includes(user?.role!)) {
-    redirect("/");
+    redirect(DEFAULT_LOGIN_REDIRECT);
   }
 
   return (

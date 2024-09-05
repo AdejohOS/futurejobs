@@ -44,7 +44,7 @@ const RoleForm = () => {
       });
     } finally {
       setIsLoading(false);
-      router.push("/settings");
+      router.push("/");
     }
   };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import InfiniteScrollContainer from "@/components/infiniteScrollContainer";
+import JobsLoadingSkeleton from "@/components/jobLoadingSkeleton";
 import MyJobs from "@/components/myjobs";
 import { Button } from "@/components/ui/button";
 import kyInstance from "@/lib/ky";
@@ -19,6 +20,8 @@ export default function FetchJobs() {
     isFetching,
     isFetchingNextPage,
     status,
+    isError,
+    isPending,
   } = useInfiniteQuery({
     queryKey: ["job-feed", "my-feed"],
     queryFn: ({ pageParam }) =>
@@ -34,10 +37,11 @@ export default function FetchJobs() {
 
   const jobs = data?.pages.flatMap((page) => page.jobs) || [];
 
-  if (status === "pending") {
-    return <Loader className="mx-auto animate-spin mt-12" />;
+  if (isPending) {
+    return <JobsLoadingSkeleton />;
   }
-  if (status === "error") {
+
+  if (isError) {
     return (
       <p className="text-destructive">An error occurred while loading jobs!</p>
     );
@@ -46,8 +50,10 @@ export default function FetchJobs() {
     <InfiniteScrollContainer
       onButtonReached={() => hasNextPage && !isFetching && fetchNextPage()}
     >
-      {jobs.length === 0 && <p>No job posted yet!</p>}
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-5">
+      {!jobs.length && !hasNextPage && (
+        <p className="text-muted-foreground">No job posted yet!</p>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-3 gap-5">
         {jobs.map((job) => (
           <MyJobs key={job.id} job={job} />
         ))}

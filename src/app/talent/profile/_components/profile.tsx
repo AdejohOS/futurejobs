@@ -4,9 +4,10 @@ import Image from "next/image";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Edit, Mail, Phone, User } from "lucide-react";
+import { Edit, Globe, Mail, Phone, User } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const Profile = () => {
   const user = useCurrentUser();
@@ -27,10 +28,13 @@ const Profile = () => {
           <div>
             <h2 className="font-bold text-xl">{user?.name}</h2>
             <p className="text-muted-foreground">Role: {user?.role}</p>
-            <Card className="p-4 mt-2 max-w-[500px]">
-              I am a passionate web developer with the right skillset for
-              building highly scalable and efficient applications.
-            </Card>
+            <p className="p-4 mt-2 max-w-[500px]">
+              <span className="text-2xl">👋</span>
+              <em className="text-muted-foreground text-sm">
+                &quot; I am a passionate web developer with the right skillset
+                for building highly scalable and efficient applications. &quot;
+              </em>
+            </p>
           </div>
         </div>
 
@@ -48,15 +52,26 @@ const Profile = () => {
           <Mail className="h-4 w-4" />
           {user?.email}
         </p>
-        <p className="flex gap-2 items-center">
+        <Link
+          href="tel:07064494394"
+          className="flex gap-2 items-center hover:underline"
+        >
           <Phone className="h-4 w-4" /> 07063494394
-        </p>
-        <p className="flex gap-2 items-center">
+        </Link>
+        <Link
+          href="/"
+          target="_blank"
+          className="flex gap-2 items-center hover:underline"
+        >
           <FaGithub className="h-4 w-4" /> github.com/adejohOs
-        </p>
-        <p className="flex gap-2 items-center">
-          <User className="h-4 w-4" /> adejohos.dev
-        </p>
+        </Link>
+        <Link
+          href="/"
+          target="_blank"
+          className="flex gap-2 items-center hover:underline"
+        >
+          <Globe className="h-4 w-4" /> adejohos.dev
+        </Link>
       </div>
       <div className="mt-4 space-y-2">
         <div>

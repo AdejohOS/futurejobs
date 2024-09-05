@@ -3,7 +3,7 @@ import React from "react";
 
 const JobSection = () => {
   return (
-    <section className="bg-gray-50">
+    <section className="bg-gray-50 h-full">
       <div className="container mx-auto py-12">
         <h2 className="font-bold text-2xl mb-4">Recent Jobs</h2>
         <FetchJobs />
