@@ -50,7 +50,6 @@ const UserMenu = () => {
 
           <DropdownMenuItem
             onClick={() => {
-              queryClient.clear;
               signOut();
             }}
             className="cursor-pointer"

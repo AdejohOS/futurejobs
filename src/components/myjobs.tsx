@@ -7,6 +7,7 @@ import { Clock, Heart } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { Badge } from "./ui/badge";
 
 interface MyJobsProps {
   job: Job;
@@ -44,26 +45,22 @@ const MyJobs = ({ job }: MyJobsProps) => {
       </div>
       <div>
         <h2 className="font-bold text-xl py-4">{job.title}</h2>
-        <p className="line-clamp-1 break-all">{job.description}</p>
+        <p className="">{job.description.slice(0, 100)}...</p>
         <div className="flex gap-2 my-2">
-          <p className="text-orange-600 font-semibold bg-orange-100 text-xs px-3 py-2 rounded-md">
+          <Badge className="text-orange-600 bg-orange-100 ">
             {job.position} Positions
-          </p>
-          <p className="text-red-600 font-semibold bg-red-100 text-xs px-3 py-2 rounded-md">
-            {job.jobType}
-          </p>
-          <p className="text-green-600 font-semibold bg-green-100 text-xs px-3 py-2 rounded-md">
+          </Badge>
+          <Badge className="text-red-600  bg-red-100 ">{job.jobType}</Badge>
+          <Badge className="text-green-600  bg-green-100 ">
             {job.experienceLevel} Years
-          </p>
+          </Badge>
         </div>
 
         <div className="flex gap-2">
-          <p className="text-blue-600 font-semibold bg-blue-100 text-xs px-3 py-2 rounded-md">
+          <Badge className="text-blue-600  bg-blue-100 ">
             &#36; {formatNumber(job.salary)}/Year
-          </p>
-          <p className="text-red-600 font-semibold bg-red-100 text-xs px-3 py-2 rounded-md">
-            {job.location}
-          </p>
+          </Badge>
+          <Badge className="text-red-600  bg-red-100 ">{job.location}</Badge>
         </div>
 
         <div className="flex  items-center justify-between mt-4">

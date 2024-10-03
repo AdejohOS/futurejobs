@@ -64,7 +64,9 @@ export const CellAction = ({ data }: CellActionProps) => {
             <Edit className="mr-2 h-4 w-4" /> Update
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/recruiter/job/${data.id}`)}
+            onClick={() =>
+              router.push(`/recruiter/job/${data.id}/applications`)
+            }
           >
             <Eye className="mr-2 h-4 w-4" /> Applicants
           </DropdownMenuItem>

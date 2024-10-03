@@ -6,18 +6,19 @@ import Image from "next/image";
 import { ColumnHelper } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
-import { ApplicationStatus } from "@prisma/client";
-import { Badge } from "@/components/ui/badge";
 import { CellAction } from "./cell-action";
+import { Badge } from "@/components/ui/badge";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type AppliedJobColumn = {
+export type JobApplicationColumn = {
   id: string;
-  jobTitle: string;
-  companyName: string;
-  status: ApplicationStatus;
   createdAt: Date;
+  applicantName: string | null;
+  email: string | null;
+  status: string;
+  jobId: string;
+  userId: string;
 };
 
 function statusToVariant(status: string) {
@@ -32,7 +33,26 @@ function statusToVariant(status: string) {
   }
 }
 
-export const columns: ColumnDef<AppliedJobColumn>[] = [
+const columnHelper = createColumnHelper();
+
+export const columns: ColumnDef<JobApplicationColumn>[] = [
+  {
+    accessorKey: "applicantName",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Applicant Name:
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  { accessorKey: "email", header: "Email" },
+  { accessorKey: "resume", header: "Resume" },
+
   {
     accessorKey: "createdAt",
     header: "Date",
@@ -42,28 +62,10 @@ export const columns: ColumnDef<AppliedJobColumn>[] = [
       return <div className="font-medium">{formatted}</div>;
     },
   },
-  {
-    accessorKey: "jobTitle",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Job role
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "companyName",
-    header: "Company name",
-  },
 
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Application Status",
     cell: ({ row }) => {
       const status = row.original.status;
       return (
@@ -73,8 +75,15 @@ export const columns: ColumnDef<AppliedJobColumn>[] = [
       );
     },
   },
+
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => (
+      <CellAction
+        data={row.original}
+        jobId={row.original.jobId}
+        userId={row.original.userId}
+      />
+    ),
   },
 ];

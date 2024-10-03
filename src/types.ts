@@ -20,12 +20,12 @@ export interface Job {
   experienceLevel: number;
   salary: number;
   location: string;
+  applications: Application[];
   company: Company;
   createdAt: Date;
 }
 
 export interface Application {
-  id: string;
   userId: string;
   jobId: string;
 }
@@ -33,4 +33,7 @@ export interface Application {
 export interface JobPage {
   jobs: Job[];
   nextCursor: string | null;
+}
+export interface ApplicationInfo {
+  hasUserApplied: boolean;
 }

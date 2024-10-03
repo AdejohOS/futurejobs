@@ -51,6 +51,12 @@ model User {
   accounts      Account[]
   role UserRole @default(USER)
 
+  bio String?
+  resumeUrl String?
+  githubUrl String?
+  websiteUrl String?
+
+
   companies Company[]
   jobs Job[]
 
@@ -126,6 +132,7 @@ model Application {
   updatedAt DateTime @updatedAt
 
   @@id([jobId, userId])
+ @@map("applications")
 }
 
  

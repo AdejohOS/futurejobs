@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { Job } from "@/types";
+import { ApplicationInfo, Job } from "@/types";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader, SquareMousePointer } from "lucide-react";
@@ -12,30 +12,16 @@ import { format } from "date-fns";
 import { ApplyJobAction } from "@/actions/actions";
 import { toast } from "@/components/ui/use-toast";
 import ApplyJobButton from "@/components/applyJobButton";
+import ApplicationButton from "@/components/applicationButton";
+import { useCurrentUser } from "@/hooks/getCurrentUser";
 
 interface JobItemProps {
   job: Job;
-  applicationCount: number;
 }
-const JobItem = ({ job, applicationCount }: JobItemProps) => {
+const JobItem = ({ job }: JobItemProps) => {
+  const user = useCurrentUser();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const applyJob = async () => {
-    setIsLoading(true);
-    try {
-      await ApplyJobAction(job.id);
-      toast({
-        title: "Application submitted",
-      });
-    } catch (error) {
-      toast({
-        title: "Something went wrong!",
-        description: "Please try again.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
   return (
     <Card className="p-4">
       <div className="flex justify-between">
@@ -69,19 +55,14 @@ const JobItem = ({ job, applicationCount }: JobItemProps) => {
           </div>
         </div>
 
-        <Button
-          onClick={() => applyJob()}
-          variant="theme"
-          className="flex items-center gap-2"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <Loader className="h-4 w-4 animate-spin" />
-          ) : (
-            <SquareMousePointer className="h-4 w-4" />
-          )}
-          Apply role
-        </Button>
+        <ApplicationButton
+          jobId={job.id}
+          initialState={{
+            hasUserApplied: job.applications.some(
+              (application) => application.userId === user?.id
+            ),
+          }}
+        />
       </div>
 
       <h2 className="text-xl font-semibold my-4">Job description</h2>
@@ -104,7 +85,7 @@ const JobItem = ({ job, applicationCount }: JobItemProps) => {
         </p>
         <p>
           <span className="font-semibold">Total applications : </span>{" "}
-          {formatNumber(applicationCount)}
+          {formatNumber(1000)}
         </p>
         <p>
           <span className="font-semibold">Date posted : </span>{" "}

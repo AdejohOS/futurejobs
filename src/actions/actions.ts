@@ -7,12 +7,15 @@ import {
   CompanyValues,
   JobSchema,
   JobValues,
+  UpdateJobApplicationSchema,
+  UpdateJobApplicationValues,
   UpdateRoleSchema,
   UpdateRoleValues,
 } from "@/lib/zodValidation";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/lib/cloudinary";
+import { error } from "console";
 
 // Create company
 export const createCompanyAction = async (data: CompanyValues) => {
@@ -426,5 +429,79 @@ export const ApplyJobAction = async (job: string) => {
       });
       return { status: "applied" };
     }
+  } catch (error) {}
+};
+
+// approve application
+export const handleApplicationAction = async (
+  userId: string,
+  jobId: string,
+  status: "APPROVED" | "REJECTED"
+) => {
+  try {
+    const user = await currentUser();
+
+    if (!user) {
+      return { error: "Unauthorised Access" };
+    }
+
+    if (user?.role !== "RECRUITER") {
+      return { error: "Forbidden Server Action" };
+    }
+
+    await db.application.update({
+      where: {
+        jobId_userId: {
+          userId,
+          jobId,
+        },
+      },
+      data: {
+        status,
+      },
+    });
+
+    revalidatePath(`/recruiter/job/${jobId}/applications`);
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    throw new Error("Failed to update application status");
+  }
+};
+
+export const rejectApplicationAction = async (
+  userId: string,
+  jobId: string
+) => {
+  try {
+    const user = await currentUser();
+
+    if (!user) {
+      return { error: "Unauthorised Access" };
+    }
+
+    if (user?.role !== "RECRUITER") {
+      return { error: "Forbidden Server Action" };
+    }
+    const jobCreatedByRecruiter = await db.job.findUnique({
+      where: {
+        id: jobId,
+        userId: user.id,
+      },
+    });
+
+    if (!jobCreatedByRecruiter) {
+      return { error: "Forbidden Server Action" };
+    }
+    await db.application.update({
+      where: {
+        jobId_userId: {
+          userId,
+          jobId: jobId,
+        },
+      },
+      data: {
+        status: "REJECTED",
+      },
+    });
   } catch (error) {}
 };

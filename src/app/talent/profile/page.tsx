@@ -33,6 +33,7 @@ const page = async () => {
 
   const formattedAppliedJobs: AppliedJobColumn[] = appliedJobs.map(
     (appliedJob) => ({
+      id: appliedJob.jobId,
       jobTitle: appliedJob.job.title,
       companyName: appliedJob.job.company.name,
       status: appliedJob.status,
