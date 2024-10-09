@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Roboto } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
+import "@uploadthing/react/styles.css";
+
 import Header from "@/components/header";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
 import ReactQueryProvider from "@/providers/reactQueryProvider";
 import Footer from "@/components/footer";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 
-const font = Roboto({
-  weight: ["100", "300", "400", "500", "700", "900"],
+const font = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -34,6 +39,7 @@ export default async function RootLayout({
       <html lang="en">
         <body className={font.className}>
           <ReactQueryProvider>
+            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             <Header />
             {children}
             <Footer />

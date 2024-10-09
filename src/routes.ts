@@ -3,7 +3,7 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/api/uploadthing"];
 
 /**
  * An array of routes that are used for authentication
@@ -44,7 +44,7 @@ export const talentPrefix = "/talent";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/";
+export const DEFAULT_LOGIN_REDIRECT = "/profile";
 
 /**
  * The default redirect path to confirm role after login

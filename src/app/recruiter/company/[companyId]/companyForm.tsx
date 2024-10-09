@@ -3,8 +3,10 @@
 import {
   createCompanyAction,
   deleteCompanyAction,
+  deleteFileUrlAction,
   updateCompanyAction,
 } from "@/actions/actions";
+import Image from "next/image";
 import { ImageUpload } from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,9 +27,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Company } from "@prisma/client";
 import { Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState, useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import AlertModal from "@/components/modals/alertModal";
+import ImageUploader from "@/components/image-uploader";
+import { UploadButton, UploadDropzone } from "@/lib/uploadthing";
+import kyInstance from "@/lib/ky";
+import ky from "ky";
 
 interface CompanyFormProps {
   initialData: Company;
@@ -38,6 +44,10 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const [logoUrl, setLogoUrl] = useState<string>(initialData?.logoUrl);
+  const [fileUrlKey, setFileUrlKey] = useState<string>("");
 
   const title = initialData ? "Update company" : "Register a new company";
   const description = initialData
@@ -56,7 +66,7 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
       website: initialData?.website || "",
       location: initialData?.location || "",
       address: initialData?.address || "",
-      logoUrl: initialData?.logoUrl || "",
+      logoUrl: "",
     },
   });
 
@@ -95,6 +105,37 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
         title: "Something went wrong!",
         description: "please try again later.",
       });
+    }
+  };
+
+  useEffect(() => {
+    if (typeof logoUrl === "string") {
+      form.setValue("logoUrl", logoUrl, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      });
+    }
+  }, [logoUrl, form]);
+
+  const deleteLogoUrl = async () => {
+    try {
+      setIsDeleting(true);
+      const res = await deleteFileUrlAction(fileUrlKey);
+      if (res?.success) {
+        toast({
+          title: "Success",
+          description: "Logo removed",
+        });
+      }
+      setLogoUrl("");
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: `${error}`,
+      });
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -216,12 +257,51 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
                   <FormItem>
                     <FormLabel>Company Logo:</FormLabel>
                     <FormControl>
-                      <ImageUpload
-                        value={field.value ? [field.value] : []}
-                        disabled={isLoading}
-                        onChange={(url) => field.onChange(url)}
-                        onRemove={() => field.onChange("")}
-                      />
+                      <>
+                        {logoUrl ? (
+                          <div className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
+                            <div className="z-10 absolute top-2 right-2">
+                              <Button
+                                type="button"
+                                onClick={() => deleteLogoUrl()}
+                                variant="destructive"
+                                size="sm"
+                              >
+                                {isDeleting ? (
+                                  <Loader className="size-4 animate-spin" />
+                                ) : (
+                                  <Trash className=" size-4" />
+                                )}
+                              </Button>
+                            </div>
+                            <Image
+                              src={logoUrl}
+                              alt="Uploaded Image"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <UploadButton
+                            endpoint="logoImage"
+                            className="mt-4 ut-button:bg-red-500 ut-button:ut-readying:bg-red-500/50"
+                            onClientUploadComplete={(res) => {
+                              setLogoUrl(res[0].url);
+                              setFileUrlKey(res[0].key);
+                              toast({
+                                title: "Success",
+                                description: "File uploaded sucessfully",
+                              });
+                            }}
+                            onUploadError={(error: Error) => {
+                              toast({
+                                title: "Something went wrong",
+                                description: `${error?.message}`,
+                              });
+                            }}
+                          />
+                        )}
+                      </>
                     </FormControl>
 
                     <FormMessage />

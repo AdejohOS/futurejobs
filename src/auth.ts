@@ -44,8 +44,23 @@ export const {
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
       }
+
+      if (token.bio && session.user) {
+        session.user.bio = token.bio as string;
+      }
+      if (token.resumeUrl && session.user) {
+        session.user.resumeUrl = token.resumeUrl as string;
+      }
+      if (token.githubUrl && session.user) {
+        session.user.githubUrl = token.githubUrl as string;
+      }
+      if (token.websiteUrl && session.user) {
+        session.user.websiteUrl = token.websiteUrl as string;
+      }
+
       return session;
     },
+
     async jwt({ token }) {
       if (!token.sub) return token;
 
@@ -54,6 +69,11 @@ export const {
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.bio = existingUser.bio;
+      token.resumeUrl = existingUser.resumeUrl;
+      token.githubUrl = existingUser.githubUrl;
+      token.websiteUrl = existingUser.websiteUrl;
+
       return token;
     },
   },

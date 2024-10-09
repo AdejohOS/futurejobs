@@ -37,7 +37,7 @@ const Header = async () => {
           )}
           {user?.role === "TALENT" && (
             <>
-              <Link href="/talent/profile">
+              <Link href="/profile">
                 <Button variant="secondary" className="flex gap-2 drop-shadow">
                   <User className="shrink-0 h-4 w-4" /> Profile
                 </Button>

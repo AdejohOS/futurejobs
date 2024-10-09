@@ -2,20 +2,53 @@
 
 import { currentUser, currentUserId } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { UTApi } from "uploadthing/server";
+
+const utapi = new UTApi();
+
 import {
   CompanySchema,
   CompanyValues,
   JobSchema,
   JobValues,
-  UpdateJobApplicationSchema,
-  UpdateJobApplicationValues,
   UpdateRoleSchema,
   UpdateRoleValues,
+  UpdateUserSchema,
+  UpdateUserValues,
 } from "@/lib/zodValidation";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/lib/cloudinary";
-import { error } from "console";
+
+//update user
+export const updateUserAction = async (values: UpdateUserValues) => {
+  const user = await currentUser();
+  if (!user) {
+    return { error: "Forbidden server action." };
+  }
+
+  const validatedFields = UpdateUserSchema.safeParse(values);
+  if (!validatedFields.success) {
+    return { error: "Invalid Fields" };
+  }
+
+  const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
+
+  await db.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      bio,
+      resumeUrl,
+      githubUrl,
+      websiteUrl,
+    },
+  });
+
+  revalidatePath("/profile");
+  redirect("/profile");
+};
 
 // Create company
 export const createCompanyAction = async (data: CompanyValues) => {
@@ -31,7 +64,7 @@ export const createCompanyAction = async (data: CompanyValues) => {
 
   const validatedFields = CompanySchema.safeParse(data);
   if (!validatedFields.success) {
-    return { error: "Innnvalid Fields" };
+    return { error: "Invalid Fields" };
   }
 
   const { name, website, address, location, about, logoUrl } =
@@ -503,5 +536,19 @@ export const rejectApplicationAction = async (
         status: "REJECTED",
       },
     });
+  } catch (error) {}
+};
+
+// delete logoUrl
+export const deleteFileUrlAction = async (fileUrlKey: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "Unauthorised access" };
+  }
+
+  try {
+    await utapi.deleteFiles(fileUrlKey);
+    return { success: true };
   } catch (error) {}
 };

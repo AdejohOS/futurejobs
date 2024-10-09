@@ -1,25 +1,25 @@
 "use client";
 import React from "react";
-
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
+import { FaFilePdf } from "react-icons/fa";
 
-interface ImageUploadProps {
+interface FileUploadProps {
   disabled?: boolean;
   onChange: (value: string) => void;
   onRemove: (value: string) => void;
   value: string[];
 }
 
-export const ImageUpload = ({
+export const FileUpload = ({
   disabled,
   onChange,
   onRemove,
   value,
-}: ImageUploadProps) => {
+}: FileUploadProps) => {
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -56,6 +56,7 @@ export const ImageUpload = ({
           </div>
         ))}
       </div>
+
       <CldUploadWidget
         onSuccess={onUpload}
         signatureEndpoint="/api/cloudinary-sign-image"
@@ -70,9 +71,10 @@ export const ImageUpload = ({
               disabled={disabled}
               variant="secondary"
               onClick={onClick}
+              className="text-sm"
             >
-              <ImagePlus className="w-4 h-4 mr-2" />
-              Upload an image
+              <FaFilePdf className="w-4 h-4 mr-2" />
+              Upload a pdf file
             </Button>
           );
         }}

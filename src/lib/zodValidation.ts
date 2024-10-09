@@ -5,16 +5,17 @@ export const UpdateRoleSchema = z.object({
     required_error: "You need to select a role.",
   }),
 });
-
-// Accept reject job application
-export const UpdateJobApplicationSchema = z.object({
-  status: z.enum(["APPROVED", "REJECTED"], {}),
-});
-export type UpdateJobApplicationValues = z.infer<
-  typeof UpdateJobApplicationSchema
->;
-
 export type UpdateRoleValues = z.infer<typeof UpdateRoleSchema>;
+
+export const UpdateUserSchema = z.object({
+  name: z.string(),
+  email: z.string(),
+  bio: z.string().optional(),
+  resumeUrl: z.string().optional(),
+  githubUrl: z.string().optional(),
+  websiteUrl: z.string().optional(),
+});
+export type UpdateUserValues = z.infer<typeof UpdateUserSchema>;
 
 export const CompanySchema = z.object({
   name: z.string().min(1, "Minimum of one character allowed"),

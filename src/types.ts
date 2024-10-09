@@ -1,3 +1,5 @@
+import { UserRole } from "@prisma/client";
+
 export type {
   Account,
   DefaultSession,
@@ -36,4 +38,14 @@ export interface JobPage {
 }
 export interface ApplicationInfo {
   hasUserApplied: boolean;
+}
+
+export interface CurrentUser {
+  id?: string | undefined;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  bio: string;
+  resumeUrl: string;
+  githubUrl: string;
+  websiteUrl: string;
 }
