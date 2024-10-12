@@ -6,14 +6,23 @@ View [Live site](https://vercel.com)
 
 ## Find that great job and get employed.
 
-Clone repo, then install dependencies:
+The easiest way to see how this application works is to watch the video or here is another way.
+
+1. Clone this project
+
+```bash
+git clone 'repo link'
+
+```
+
+2. Install dependencies:
 
 ```bash
 npm i
 
 ```
 
-Run the development server:
+3. Run the development server:
 
 ```bash
 npm run dev
