@@ -427,42 +427,43 @@ export const ApplyJobAction = async (job: string) => {
     return { error: "Forbidden Server Action" };
   }
 
-  try {
-    const myJob = await db.job.findUnique({
-      where: {
-        id: job,
-      },
-    });
-
-    if (!myJob) {
-      return { error: "Job does not exist" };
-    }
-
-    const existingApplication = await db.job.findUnique({
-      where: {
-        id: job,
-        userId: user.id,
-      },
-    });
-
-    if (existingApplication) {
-      await db.job.delete({
+  if (user)
+    try {
+      const myJob = await db.job.findUnique({
         where: {
-          id: existingApplication.id,
+          id: job,
         },
       });
 
-      return { status: "deleted" };
-    } else {
-      await db.application.create({
-        data: {
-          userId: user.id!,
-          jobId: job,
+      if (!myJob) {
+        return { error: "Job does not exist" };
+      }
+
+      const existingApplication = await db.job.findUnique({
+        where: {
+          id: job,
+          userId: user.id,
         },
       });
-      return { status: "applied" };
-    }
-  } catch (error) {}
+
+      if (existingApplication) {
+        await db.job.delete({
+          where: {
+            id: existingApplication.id,
+          },
+        });
+
+        return { status: "deleted" };
+      } else {
+        await db.application.create({
+          data: {
+            userId: user.id!,
+            jobId: job,
+          },
+        });
+        return { status: "applied" };
+      }
+    } catch (error) {}
 };
 
 // approve application

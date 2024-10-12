@@ -18,7 +18,6 @@ import {
   deleteCompanyActionConfirm,
   handleApplicationAction,
 } from "@/actions/actions";
-import { UpdateJobApplicationValues } from "@/lib/zodValidation";
 
 interface CellActionProps {
   data: JobApplicationColumn;

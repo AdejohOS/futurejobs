@@ -1,3 +1,4 @@
+"use client";
 import kyInstance from "@/lib/ky";
 import { ApplicationInfo } from "@/types";
 import {
@@ -10,6 +11,7 @@ import React from "react";
 import { toast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { SquareMousePointer } from "lucide-react";
+import { useCurrentUser } from "@/hooks/getCurrentUser";
 
 interface ApplicationButtonProps {
   jobId: string;
@@ -17,6 +19,7 @@ interface ApplicationButtonProps {
 }
 const ApplicationButton = ({ jobId, initialState }: ApplicationButtonProps) => {
   const queryClient = useQueryClient();
+  const user = useCurrentUser();
 
   const queryKey: QueryKey = ["application-info", jobId];
 
@@ -57,14 +60,18 @@ const ApplicationButton = ({ jobId, initialState }: ApplicationButtonProps) => {
     },
   });
   return (
-    <Button
-      onClick={() => mutate()}
-      variant={data.hasUserApplied ? "outline" : "theme"}
-      className="flex items-center gap-2"
-    >
-      <SquareMousePointer className="h-4 w-4" />{" "}
-      {data.hasUserApplied ? "Delete application" : "Apply role"}
-    </Button>
+    <>
+      {!user?.resumeUrl ? null : (
+        <Button
+          onClick={() => mutate()}
+          variant={data.hasUserApplied ? "outline" : "theme"}
+          className="flex items-center gap-2"
+        >
+          <SquareMousePointer className="h-4 w-4" />{" "}
+          {data.hasUserApplied ? "Delete application" : "Apply role"}
+        </Button>
+      )}
+    </>
   );
 };
 

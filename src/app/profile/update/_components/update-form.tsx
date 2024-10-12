@@ -206,7 +206,10 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
                     ) : (
                       <UploadButton
                         endpoint="resumeFile"
-                        className="mt-4 ut-button:bg-red-500 ut-button:ut-readying:bg-red-500/50 w-36"
+                        className="mt-4 ut-button:bg-sky-600
+                         ut-button:ut-readying:bg-sky-500/50 
+                         ut-button:rounded-l-full ut-button:rounded-r-full bg-slate-50
+                          ut-allowed-content:text-muted-foreground w-36"
                         onClientUploadComplete={(res) => {
                           setResumeUrl(res[0].url);
                           setFileUrlKey(res[0].key);

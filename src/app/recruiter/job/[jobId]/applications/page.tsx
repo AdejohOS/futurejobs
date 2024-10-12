@@ -22,6 +22,7 @@ const page = async ({ params: { jobId } }: { params: { jobId: string } }) => {
       id: application.jobId,
       createdAt: application.createdAt,
       applicantName: application.user.name,
+      resumeUrl: application.user.resumeUrl,
       email: application.user.email,
       status: application.status,
       jobId: application.jobId,

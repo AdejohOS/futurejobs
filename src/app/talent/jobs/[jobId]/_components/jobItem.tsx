@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ApplicationInfo, Job } from "@/types";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader, SquareMousePointer } from "lucide-react";
+import { AlertTriangle, Edit, Loader, SquareMousePointer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatNumber } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -14,6 +14,7 @@ import { toast } from "@/components/ui/use-toast";
 import ApplyJobButton from "@/components/applyJobButton";
 import ApplicationButton from "@/components/applicationButton";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
+import Link from "next/link";
 
 interface JobItemProps {
   job: Job;
@@ -24,6 +25,20 @@ const JobItem = ({ job }: JobItemProps) => {
 
   return (
     <Card className="p-4">
+      {!user?.resumeUrl && (
+        <div className="text-center mb-3 bg-destructive/70 flex  justify-center gap-5 py-4 px-4 text-white items-center rounded-md">
+          <p className="flex items-center gap-3">
+            <AlertTriangle className="size-5" /> Please update profile to apply
+            for role!
+          </p>
+          <Link href="/profile/update">
+            <Button variant="secondary">
+              <Edit className="size-4 mr-2" /> Update profile
+            </Button>
+          </Link>
+        </div>
+      )}
+
       <div className="flex justify-between">
         <div className="flex gap-3">
           <div>

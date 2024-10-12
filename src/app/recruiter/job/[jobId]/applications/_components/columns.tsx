@@ -5,9 +5,10 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
 import { ColumnHelper } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Target } from "lucide-react";
 import { CellAction } from "./cell-action";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -15,6 +16,7 @@ export type JobApplicationColumn = {
   id: string;
   createdAt: Date;
   applicantName: string | null;
+  resumeUrl: string | null;
   email: string | null;
   status: string;
   jobId: string;
@@ -51,7 +53,19 @@ export const columns: ColumnDef<JobApplicationColumn>[] = [
     },
   },
   { accessorKey: "email", header: "Email" },
-  { accessorKey: "resume", header: "Resume" },
+  {
+    accessorKey: "resume",
+    header: "Resume",
+    cell: ({ row }) => (
+      <Link
+        href={row.original.resumeUrl || ""}
+        target="_blank"
+        className="underline text-blue-400"
+      >
+        resume.pdf
+      </Link>
+    ),
+  },
 
   {
     accessorKey: "createdAt",

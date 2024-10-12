@@ -63,6 +63,10 @@ export async function POST(
   try {
     const user = await currentUser();
 
+    if (!user?.resumeUrl) {
+      return { error: "Update profile to appy role." };
+    }
+
     if (!user) {
       return NextResponse.json(
         { error: "Unauthorised access" },
