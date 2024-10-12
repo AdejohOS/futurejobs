@@ -22,7 +22,9 @@ npm i
 
 ```
 
-3. Run the development server:
+3. Setup your keys e.g Database, authApi Keys etc.
+
+4. Run the development server:
 
 ```bash
 npm run dev
