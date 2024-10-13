@@ -1,12 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FutureJobs with Next.js.
 
-View [Live site](https://vercel.com)
+## A fully functional Job search application platform built with Next 14, typescript, Prisma, Uploadthing and Tanstack Query.
 
-# FutureJobs
-
-## Find that great job and get employed.
-
-The easiest way to see how this application works is to watch the video or here is another way.
+The easiest way to see how this application works is to View [Live site](https://vercel.com) or here is another way.
 
 1. Clone this project
 
