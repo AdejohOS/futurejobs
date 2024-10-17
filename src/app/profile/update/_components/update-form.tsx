@@ -78,7 +78,7 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
       if (res?.success) {
         toast({
           title: "Success",
-          description: "Logo removed",
+          description: "Resume removed",
         });
       }
       setResumeUrl("");

@@ -33,8 +33,7 @@ export const updateUserAction = async (values: UpdateUserValues) => {
   }
 
   const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
-
-  await db.user.update({
+  const job = await db.user.update({
     where: {
       id: user.id,
     },
@@ -45,7 +44,6 @@ export const updateUserAction = async (values: UpdateUserValues) => {
       websiteUrl,
     },
   });
-
   revalidatePath("/profile");
   redirect("/profile");
 };

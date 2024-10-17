@@ -101,9 +101,9 @@ const Profile = () => {
         {user?.role === "TALENT" && (
           <div>
             <p>Resume</p>
-            {user.websiteUrl ? (
+            {user.resumeUrl ? (
               <a
-                href={user.resumeUrl}
+                href={user?.resumeUrl}
                 download
                 className="text-blue-500 text-sm"
               >
