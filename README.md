@@ -4,13 +4,13 @@
 
 ### Key Features
 
-- User creation, authentication and management with Auth.js
-- Uploadthing for storing our images & files
-- Tanstack React Query for mutations and unlimited scrolling
-- Ky http request
+- User creation, authentication and management with [Auth.js] (https://authjs.dev/)
+- [Uploadthing] (https://uploadthing.com/) for storing our images & files
+- [Tanstack React Query](https://tanstack.com/query/latest) for mutations and unlimited scrolling
+- [Ky](https://www.npmjs.com/package/ky) http request
 - Server actions
-- Prisma ORM
-- Sql database
+- [Prisma ORM](https://next-auth.js.org/v3/adapters/prisma)
+- [Sql database](https://aiven.io/)
 
 The easiest way to see how this application works is to View [Live site](https://vercel.com) or here is another way.
 
