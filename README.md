@@ -4,8 +4,8 @@
 
 ### Key Features
 
-- User creation, authentication and management with [Auth.js] (https://authjs.dev/)
-- [Uploadthing] (https://uploadthing.com/) for storing our images & files
+- User creation, authentication and management with [Auth.js](https://authjs.dev/)
+- [Uploadthing](https://uploadthing.com/) for storing our images & files
 - [Tanstack React Query](https://tanstack.com/query/latest) for mutations and unlimited scrolling
 - [Ky](https://www.npmjs.com/package/ky) http request
 - Server actions
