@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
-    const pageSize = 2;
+    const pageSize = 6;
 
     const jobs = await db.job.findMany({
       include: {
