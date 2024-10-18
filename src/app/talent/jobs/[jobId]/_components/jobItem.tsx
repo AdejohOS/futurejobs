@@ -11,7 +11,6 @@ import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
 import { ApplyJobAction } from "@/actions/actions";
 import { toast } from "@/components/ui/use-toast";
-import ApplyJobButton from "@/components/applyJobButton";
 import ApplicationButton from "@/components/applicationButton";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
 import Link from "next/link";

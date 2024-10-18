@@ -188,6 +188,7 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
                             onClick={() => deleteResumeUrl()}
                             variant="destructive"
                             size="sm"
+                            disabled={isLoading}
                           >
                             {isDeleting ? (
                               <Loader className="size-4 animate-spin" />
