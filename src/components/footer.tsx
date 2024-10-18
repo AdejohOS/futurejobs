@@ -11,6 +11,7 @@ import {
 import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -18,7 +19,16 @@ const Footer = () => {
       <div className="container mx-auto py-12">
         <div className="flex gap-4 justify-around">
           <div>
-            <h3 className="text-gray-100 font-bold">FutureJobs</h3>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/images/white.svg"
+                alt="FutureJobs Logo"
+                height={80}
+                width={80}
+              />
+              <h3 className="text-gray-100 font-bold">FutureJobs</h3>
+            </div>
+
             <address className="text-gray-100 flex items-center gap-2">
               <MapPin className="size-4" />
               22, konami, Frankfurt, Germany

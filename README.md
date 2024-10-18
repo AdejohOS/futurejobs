@@ -12,7 +12,7 @@
 - [Prisma ORM](https://next-auth.js.org/v3/adapters/prisma)
 - [Sql database](https://aiven.io/)
 
-The easiest way to see how this application works is to View [Live site](https://vercel.com) or here is another way.
+The easiest way to see how this application works is to View [Live site](https://futurejobs.vercel.app/) or here is another way.
 
 1. Clone this project
 

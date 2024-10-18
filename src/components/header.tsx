@@ -11,15 +11,14 @@ import React from "react";
 import { Button } from "./ui/button";
 import UserMenu from "./userMenu";
 import { currentUser } from "@/lib/auth";
+import Logo from "./logo";
 
 const Header = async () => {
   const user = await currentUser();
   return (
     <header className="bg-sky-50 h-16 px-4 drop-shadow">
       <div className="container flex items-center w-full h-full justify-between mx-auto">
-        <Link href="/" className="text-2xl font-semibold text-sky-600">
-          FutureJobs
-        </Link>
+        <Logo />
         <div className="flex items-center gap-4">
           {user?.role === "RECRUITER" && (
             <>
