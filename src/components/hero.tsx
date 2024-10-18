@@ -1,8 +1,4 @@
 import React from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { SearchIcon } from "lucide-react";
-import CategoryCarousel from "./categoryCarousel";
 import SearchField from "./searchField";
 
 const Hero = () => {
