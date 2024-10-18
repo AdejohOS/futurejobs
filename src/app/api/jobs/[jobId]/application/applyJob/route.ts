@@ -11,10 +11,7 @@ export async function GET(
     const user = await currentUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorised access" },
-        { status: 401 }
-      );
+      return NextResponse.json("Unauthorised access", { status: 401 });
     }
 
     const job = await db.job.findUnique({
@@ -39,7 +36,7 @@ export async function GET(
     });
 
     if (!job) {
-      return NextResponse.json({ error: "Job not found" }, { status: 404 });
+      return NextResponse.json("Job not found", { status: 404 });
     }
 
     const data: ApplicationInfo = {
@@ -49,10 +46,7 @@ export async function GET(
     return NextResponse.json(data);
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json("Internal server error", { status: 500 });
   }
 }
 
@@ -64,14 +58,11 @@ export async function POST(
     const user = await currentUser();
 
     if (!user?.resumeUrl) {
-      return { error: "Update profile to appy role." };
+      return new NextResponse("Update profile to appy role.", { status: 400 });
     }
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorised access" },
-        { status: 401 }
-      );
+      return new NextResponse("Unauthorised access", { status: 401 });
     }
 
     await db.application.upsert({
@@ -90,10 +81,7 @@ export async function POST(
     return new NextResponse();
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json("Internal server error", { status: 500 });
   }
 }
 
@@ -105,10 +93,7 @@ export async function DELETE(
     const user = await currentUser();
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorised access" },
-        { status: 401 }
-      );
+      return NextResponse.json("Unauthorised access", { status: 401 });
     }
 
     await db.application.deleteMany({
@@ -121,9 +106,6 @@ export async function DELETE(
     return new NextResponse();
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json("Internal server error", { status: 500 });
   }
 }
