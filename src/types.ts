@@ -36,6 +36,7 @@ export interface JobPage {
   jobs: Job[];
   nextCursor: string | null;
 }
+
 export interface ApplicationInfo {
   hasUserApplied: boolean;
 }

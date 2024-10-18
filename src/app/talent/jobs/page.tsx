@@ -13,7 +13,7 @@ const page = async () => {
     },
   });
   return (
-    <div className="h-full">
+    <div className="flex-1">
       <JobSection />
     </div>
   );

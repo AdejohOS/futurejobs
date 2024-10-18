@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
-    const pageSize = 6;
+    const pageSize = 2;
 
     const jobs = await db.job.findMany({
       include: {
         company: true,
+        applications: true,
       },
       orderBy: {
         createdAt: "desc",

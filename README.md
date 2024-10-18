@@ -6,7 +6,7 @@
 
 - User creation, authentication and management with [Auth.js](https://authjs.dev/)
 - [Uploadthing](https://uploadthing.com/) for storing our images & files
-- [Tanstack React Query](https://tanstack.com/query/latest) for mutations and unlimited scrolling
+- [Tanstack React Query](https://tanstack.com/query/latest) for mutations and infinate scrolling
 - [Ky](https://www.npmjs.com/package/ky) http request
 - Server actions
 - [Prisma ORM](https://next-auth.js.org/v3/adapters/prisma)
