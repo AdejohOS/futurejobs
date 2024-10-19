@@ -16,8 +16,8 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <footer className="bg-sky-950 w-full">
-      <div className="container mx-auto py-12">
-        <div className="flex gap-4 justify-around">
+      <div className="container mx-auto py-12 px-4">
+        <div className="flex gap-4 justify-around flex-wrap">
           <div>
             <div className="flex items-center gap-2">
               <Image
