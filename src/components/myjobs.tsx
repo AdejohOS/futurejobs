@@ -64,18 +64,13 @@ const MyJobs = ({ job }: MyJobsProps) => {
         </div>
 
         <div className="flex  items-center justify-between mt-4">
-          <div className="flex gap-3">
-            <Button variant="theme" className="">
-              Apply Now
-            </Button>
-            <Button
-              onClick={() => router.push(`/talent/jobs/${job.id}`)}
-              variant="outline"
-              className=""
-            >
-              View Details
-            </Button>
-          </div>
+          <Button
+            onClick={() => router.push(`/talent/jobs/${job.id}`)}
+            variant="theme"
+            className=""
+          >
+            View Details
+          </Button>
 
           <p className="text-xs flex items-center gap-1">
             <Clock className="h-3 w-3" /> {formatRelativeDate(job.createdAt)}

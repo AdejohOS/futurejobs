@@ -3,11 +3,9 @@
 import InfiniteScrollContainer from "@/components/infiniteScrollContainer";
 import JobsLoadingSkeleton from "@/components/jobLoadingSkeleton";
 import MyJobs from "@/components/myjobs";
-import { Button } from "@/components/ui/button";
 import kyInstance from "@/lib/ky";
-import { Job, JobPage } from "@/types";
+import { JobPage } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 import { Loader } from "lucide-react";
 

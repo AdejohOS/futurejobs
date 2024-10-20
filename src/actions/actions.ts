@@ -158,15 +158,7 @@ export const deleteCompanyAction = async (companyId: string) => {
   if (!company) {
     return { error: "Company not found!" };
   }
-
-  // delete img from cloudinary
-  if (company.logoUrl) {
-    await cloudinary.uploader.destroy(company.logoUrl, {
-      invalidate: true,
-      resource_type: "image",
-    });
-  }
-
+  // delete img from uploadthing
   await db.company.delete({
     where: {
       id: companyId,

@@ -96,7 +96,15 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
   const onDelete = async () => {
     setLoading(true);
     try {
+      const getLogoKey = (src: string) =>
+        src.substring(src.lastIndexOf("/") + 1);
+      const fileUrlKey = getLogoKey(initialData?.logoUrl!);
+
+      if (initialData.logoUrl) {
+        const res = await deleteFileUrlAction(fileUrlKey);
+      }
       await deleteCompanyAction(companyId!);
+
       toast({
         title: "Company deleted successfully!",
       });
@@ -266,6 +274,7 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
                                 onClick={() => deleteLogoUrl()}
                                 variant="destructive"
                                 size="sm"
+                                disabled={isLoading}
                               >
                                 {isDeleting ? (
                                   <Loader className="size-4 animate-spin" />
