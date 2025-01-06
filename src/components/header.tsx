@@ -17,7 +17,6 @@ import { currentUser } from "@/lib/auth";
 import Logo from "./logo";
 
 import { Input } from "./ui/input";
-import Search from "./search";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -92,15 +91,18 @@ const Header = () => {
             showFullWidthSearch && "hidden"
           )}
         >
-          <Button
-            type="submit"
-            variant="secondary"
-            className="rounded-full md:hidden drop-shadow"
-            size="icon"
-            onClick={() => setShowFullWidthSearch(true)}
-          >
-            <SearchIcon className=" size-4" />
-          </Button>
+          {pathName !== "/" && (
+            <Button
+              type="submit"
+              variant="secondary"
+              className="rounded-full md:hidden drop-shadow"
+              size="icon"
+              onClick={() => setShowFullWidthSearch(true)}
+            >
+              <SearchIcon className=" size-4" />
+            </Button>
+          )}
+
           {user?.role === "RECRUITER" && (
             <>
               <Link href="/recruiter/company">
@@ -131,7 +133,7 @@ const Header = () => {
           ) : (
             <Link href="/auth/login">
               <Button variant="secondary" className="flex gap-2 drop-shadow">
-                <LogIn className="shrink-0 h-4 w-4" /> Signin / Signup
+                <LogIn className="shrink-0 h-4 w-4" /> Login
               </Button>
             </Link>
           )}
