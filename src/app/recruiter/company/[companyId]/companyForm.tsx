@@ -300,7 +300,7 @@ const CompanyForm = ({ initialData, companyId }: CompanyFormProps) => {
                             onClientUploadComplete={(res) => {
                               setLogoUrl(res[0].url);
                               setFileUrlKey(res[0].key);
-                              toast({
+                              toast({ 
                                 title: "Success",
                                 description: "File uploaded sucessfully",
                               });

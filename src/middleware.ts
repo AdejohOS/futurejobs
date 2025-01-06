@@ -8,11 +8,11 @@ import {
   recruiterPrefix,
   talentPrefix,
   apiFetchPrefix,
+  freeJobsPrefix,
   DEFAULT_LOGIN_REDIRECT,
 } from "@/routes";
 
 import { auth } from "@/auth";
-import { currentRole } from "./lib/auth";
 
 export default auth((req) => {
   const { nextUrl } = req;
@@ -21,6 +21,7 @@ export default auth((req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
   const isApiFetchRoute = nextUrl.pathname.startsWith(apiFetchPrefix);
+  const isFreeJobRoute = nextUrl.pathname.startsWith(freeJobsPrefix);
 
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -34,6 +35,10 @@ export default auth((req) => {
   }
 
   if (isApiFetchRoute) {
+    return;
+  }
+
+  if (isFreeJobRoute) {
     return;
   }
 
@@ -57,7 +62,7 @@ export default auth((req) => {
     return;
   }
 
-  if (!isLoggedIn && !isPublicRoute) {
+  if (!isLoggedIn && !isPublicRoute && !freeJobsPrefix) {
     return Response.redirect(new URL("/auth/login", nextUrl));
   }
   return;

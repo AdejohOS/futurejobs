@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
 import Image from "next/image";
 import { ColumnHelper } from "@tanstack/react-table";
@@ -13,10 +13,9 @@ export type CompanyColumn = {
   id: string;
   logoUrl: string;
   name: string;
-  createdAt: Date;
-};
 
-const columnHelper = createColumnHelper();
+  createdAt: string;
+};
 
 export const columns: ColumnDef<CompanyColumn>[] = [
   {
@@ -50,11 +49,6 @@ export const columns: ColumnDef<CompanyColumn>[] = [
   {
     accessorKey: "createdAt",
     header: "Date",
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      const formatted = date.toLocaleDateString();
-      return <div className="font-medium">{formatted}</div>;
-    },
   },
 
   {

@@ -27,6 +27,7 @@ import { FileUpload } from "@/components/file-upload";
 import { UploadButton } from "@/lib/uploadthing";
 import Link from "next/link";
 import { FaFilePdf } from "react-icons/fa";
+import { useCurrentUser } from "@/hooks/getCurrentUser";
 
 interface UpdateFormProps {
   initialData: CurrentUser;
@@ -34,6 +35,7 @@ interface UpdateFormProps {
 
 const UpdateForm = ({ initialData }: UpdateFormProps) => {
   const router = useRouter();
+  const user = useCurrentUser();
 
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -138,6 +140,7 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
                     {...field}
                     placeholder="write a little about yourself.."
                     className="resize-none"
+                    disabled={isLoading}
                   />
                 </FormControl>
 
@@ -145,96 +148,101 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {" "}
-            <FormField
-              control={form.control}
-              name="githubUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Github:</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Your github link..." />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="websiteUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Website:</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Your portfolio..." />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="resumeUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Upload resume:</FormLabel>
-                <FormControl>
-                  <>
-                    {resumeUrl ? (
-                      <div className="relative size-36 rounded-md overflow-hidden">
-                        <div className="z-10 absolute top-2 right-2">
-                          <Button
-                            type="button"
-                            onClick={() => deleteResumeUrl()}
-                            variant="destructive"
-                            size="sm"
-                            disabled={isLoading}
-                          >
-                            {isDeleting ? (
-                              <Loader className="size-4 animate-spin" />
-                            ) : (
-                              <Trash className=" size-4" />
-                            )}
-                          </Button>
-                        </div>
-                        <Link href={resumeUrl}>
-                          <FaFilePdf className=" text-muted-foreground size-24" />
-                          <p className="text-xs mt-4 text-muted-foreground">
-                            {fileUrlName}
-                          </p>
-                        </Link>
-                      </div>
-                    ) : (
-                      <UploadButton
-                        endpoint="resumeFile"
-                        className="mt-4 ut-button:bg-sky-600
+          {user?.role === "TALENT" && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {" "}
+                <FormField
+                  control={form.control}
+                  name="githubUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Github:</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Your github link..." />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="websiteUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Website:</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Your portfolio..." />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormField
+                control={form.control}
+                name="resumeUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Upload resume:</FormLabel>
+                    <FormControl>
+                      <>
+                        {resumeUrl ? (
+                          <div className="relative size-36 rounded-md overflow-hidden">
+                            <div className="z-10 absolute top-2 right-2">
+                              <Button
+                                type="button"
+                                onClick={() => deleteResumeUrl()}
+                                variant="destructive"
+                                size="sm"
+                                disabled={isLoading}
+                              >
+                                {isDeleting ? (
+                                  <Loader className="size-4 animate-spin" />
+                                ) : (
+                                  <Trash className=" size-4" />
+                                )}
+                              </Button>
+                            </div>
+                            <Link href={resumeUrl}>
+                              <FaFilePdf className=" text-muted-foreground size-24" />
+                              <p className="text-xs mt-4 text-muted-foreground">
+                                {fileUrlName}
+                              </p>
+                            </Link>
+                          </div>
+                        ) : (
+                          <UploadButton
+                            endpoint="resumeFile"
+                            className="mt-4 ut-button:bg-sky-600
                          ut-button:ut-readying:bg-sky-500/50 
                          ut-button:rounded-l-full ut-button:rounded-r-full bg-slate-50
                           ut-allowed-content:text-muted-foreground w-36"
-                        onClientUploadComplete={(res) => {
-                          setResumeUrl(res[0].url);
-                          setFileUrlKey(res[0].key);
-                          setFileUrlName(res[0].name);
-                          toast({
-                            title: "Success",
-                            description: "File uploaded sucessfully",
-                          });
-                        }}
-                        onUploadError={(error: Error) => {
-                          toast({
-                            title: "Something went wrong",
-                            description: `${error?.message}`,
-                          });
-                        }}
-                      />
-                    )}
-                  </>
-                </FormControl>
+                            onClientUploadComplete={(res) => {
+                              setResumeUrl(res[0].url);
+                              setFileUrlKey(res[0].key);
+                              setFileUrlName(res[0].name);
+                              toast({
+                                title: "Success",
+                                description: "File uploaded sucessfully",
+                              });
+                            }}
+                            onUploadError={(error: Error) => {
+                              toast({
+                                title: "Something went wrong",
+                                description: `${error?.message}`,
+                              });
+                            }}
+                          />
+                        )}
+                      </>
+                    </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />{" "}
+            </>
+          )}
+
           <div className="flex justify-end gap-2">
             <Button
               type="button"

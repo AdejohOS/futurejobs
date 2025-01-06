@@ -65,7 +65,7 @@ const MyJobs = ({ job }: MyJobsProps) => {
 
         <div className="flex  items-center justify-between mt-4">
           <Button
-            onClick={() => router.push(`/talent/jobs/${job.id}`)}
+            onClick={() => router.push(`/jobs/${job.id}`)}
             variant="theme"
             className=""
           >

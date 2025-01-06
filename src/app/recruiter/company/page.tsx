@@ -10,6 +10,7 @@ import { TitleHeadings } from "@/components/titleHeadings";
 import { currentUserId } from "@/lib/auth";
 import Loading from "@/app/loading";
 import { Metadata } from "next";
+import { format } from "date-fns";
 
 export const metadata: Metadata = {
   title: "Recruiter companies",
@@ -30,7 +31,7 @@ const page = async () => {
     id: company.id,
     name: company.name,
     logoUrl: company.logoUrl,
-    createdAt: company.createdAt,
+    createdAt: format(company.createdAt, "MMMM do, yyyy"),
   }));
 
   return (

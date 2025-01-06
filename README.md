@@ -2,6 +2,8 @@
 
 ## A fully functional Job search application, built with Next 14, Typescript, Auth.js, Prisma, Shadcn Ui, Uploadthing, Ky, Sql database, and Tanstack Query.
 
+<img src="" height="180" width="240" alt="futurejobs" border="10"/>
+
 ### Key Features
 
 - User creation, authentication and management with [Auth.js](https://authjs.dev/)

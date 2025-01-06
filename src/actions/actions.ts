@@ -18,7 +18,6 @@ import {
 } from "@/lib/zodValidation";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import cloudinary from "@/lib/cloudinary";
 
 //update user
 export const updateUserAction = async (values: UpdateUserValues) => {
@@ -26,26 +25,30 @@ export const updateUserAction = async (values: UpdateUserValues) => {
   if (!user) {
     return { error: "Forbidden server action." };
   }
+  try {
+    const validatedFields = UpdateUserSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: "Invalid Fields" };
+    }
 
-  const validatedFields = UpdateUserSchema.safeParse(values);
-  if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
+    const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
+    const job = await db.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        bio,
+        resumeUrl,
+        githubUrl,
+        websiteUrl,
+      },
+    });
+  } catch (error) {
+    return { error: (error as Error)?.message || "Failed to update user" };
+  } finally {
+    revalidatePath("/profile");
+    redirect("/profile");
   }
-
-  const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
-  const job = await db.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      bio,
-      resumeUrl,
-      githubUrl,
-      websiteUrl,
-    },
-  });
-  revalidatePath("/profile");
-  redirect("/profile");
 };
 
 // Create company

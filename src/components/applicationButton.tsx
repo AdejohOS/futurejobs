@@ -12,6 +12,7 @@ import { toast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 import { SquareMousePointer } from "lucide-react";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
+import { useRouter } from "next/navigation";
 
 interface ApplicationButtonProps {
   jobId: string;
@@ -19,6 +20,7 @@ interface ApplicationButtonProps {
 }
 const ApplicationButton = ({ jobId, initialState }: ApplicationButtonProps) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const user = useCurrentUser();
 
   const queryKey: QueryKey = ["application-info", jobId];
@@ -61,16 +63,22 @@ const ApplicationButton = ({ jobId, initialState }: ApplicationButtonProps) => {
   });
   return (
     <>
-      {!user?.resumeUrl ? null : (
-        <Button
-          onClick={() => mutate()}
-          variant={data.hasUserApplied ? "outline" : "theme"}
-          className="flex items-center gap-2"
-        >
-          <SquareMousePointer className="h-4 w-4" />{" "}
-          {data.hasUserApplied ? "Delete application" : "Apply role"}
-        </Button>
-      )}
+      <Button
+        onClick={() => {
+          if (!user) {
+            return router.push("/auth/login");
+          }
+          if (!user.resumeUrl) {
+            return router.push("/profile");
+          }
+          mutate();
+        }}
+        variant={data.hasUserApplied ? "outline" : "theme"}
+        className="flex items-center gap-2"
+      >
+        <SquareMousePointer className="h-4 w-4" />{" "}
+        {data.hasUserApplied ? "Delete application" : "Apply role"}
+      </Button>
     </>
   );
 };

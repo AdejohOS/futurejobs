@@ -7,6 +7,7 @@ const Logo = () => {
         alt="FutureJobs Logo"
         height={60}
         width={60}
+        className="shrink-0"
       />
     </>
   );

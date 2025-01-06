@@ -11,11 +11,13 @@ import Footer from "@/components/footer";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
+import { cn } from "@/lib/utils";
 
-const font = Poppins({
+const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
     default: "Futurejobs | Get employed with ease!",
   },
   description:
-    "At future jobs we connect Recruiters in the industry to great talents providing the with the right information and providing great prospects",
+    "At future jobs we connect Recruiters in the industry to great Talents providing them with the right information and ensuring better engagements",
 };
 
 export default async function RootLayout({
@@ -36,11 +38,17 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={font.className}>
+        <body
+          className={cn(
+            `flex min-h-screen flex-col antialiased font-sans`,
+            poppins.variable
+          )}
+        >
           <ReactQueryProvider>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
             <Header />
-            {children}
+            <div className="flex-grow">{children}</div>
+
             <Footer />
             <Toaster />
           </ReactQueryProvider>

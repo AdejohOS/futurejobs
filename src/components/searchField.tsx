@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { SearchIcon } from "lucide-react";
@@ -8,25 +8,27 @@ import { useRouter } from "next/navigation";
 const SearchField = () => {
   const router = useRouter();
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const q = (form.q as HTMLInputElement).value.trim();
-    if (!q) return;
-    router.push(`/search?q=${encodeURIComponent(q)}`);
+    const encodedSearchQuery = encodeURI(searchQuery);
+
+    if (!searchQuery) return;
+    router.push(`/search?q=${encodedSearchQuery}`);
   };
   return (
     <form
       onSubmit={handleSubmit}
-      method="GET"
-      action="/search"
       className="mt-6 text-center flex items-center max-w-prose mx-auto"
     >
       <Input
-        name="q"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="rounded-l-full rounded-r-none border-r-0"
         type="search"
         placeholder="Search jobs..."
+        defaultValue={searchQuery}
       />
       <Button
         type="submit"

@@ -20,6 +20,13 @@ export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
 export const apiAuthPrefix = "/api/auth";
 
 /**
+ * The prifix to access jobs, logged in or not
+ * Routes that start with this prefix are used to view all jobs
+ * @type {string}
+ */
+export const freeJobsPrefix = "/jobs";
+
+/**
  * The prefix for API  data fetch
  * Routes that start with this prefix are used for to fetch data
  * @type {string}
