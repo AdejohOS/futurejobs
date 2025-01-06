@@ -37,7 +37,7 @@ const Header = () => {
     router.push(`/search?q=${encodedSearchQuery}`);
   };
   return (
-    <header className="bg-sky-50  px-4 py-3 drop-shadow">
+    <header className="bg-sky-50   py-3 drop-shadow">
       <div className="container flex items-center w-full h-full justify-between mx-auto gap-3">
         <Link href="/" className={cn(showFullWidthSearch && "hidden")}>
           <Logo />
