@@ -87,7 +87,8 @@ export default function JobForm({
   const createUpdateJob = async (data: JobValues) => {
     try {
       if (initialData) {
-        await updateJobAction(data, jobId!);
+        const response = await updateJobAction(jobId!, data);
+
         toast({
           title: toastMessage,
         });

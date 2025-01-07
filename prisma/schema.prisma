@@ -89,7 +89,7 @@ model Company {
 model Job {
   id String @id @default(cuid())
   title String
-  description String
+  description String @db.Text
   requirement String
   salary Int
   experienceLevel Int

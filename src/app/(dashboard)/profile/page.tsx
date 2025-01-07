@@ -7,6 +7,7 @@ import { currentUser } from "@/lib/auth";
 import { AppliedJobColumn } from "./_components/columns";
 import { AppliedJobsClient } from "./_components/client";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: `User Profile`,
@@ -14,6 +15,10 @@ export const metadata: Metadata = {
 
 async function getRecruiterOverview() {
   const user = await currentUser();
+
+  if (!user) {
+    redirect("/auth/login");
+  }
   const [recruiterCompanyCount, recruiterJobCount, recruiterApprovedCount] =
     await Promise.all([
       await db.company.count({

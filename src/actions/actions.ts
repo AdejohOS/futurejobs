@@ -285,41 +285,35 @@ export const createJobAction = async (data: JobValues) => {
 };
 
 // updateJob
-export const updateJobAction = async (data: JobValues, jobId: string) => {
+export const updateJobAction = async (jobId: string, data: JobValues) => {
   const user = await currentUser();
 
   if (!user) {
     return { error: "Unauthorised Access" };
   }
 
-  if (user.role! === "RECRUITER") {
+  if (user?.role !== "RECRUITER") {
     return { error: "Forbidden Server Action" };
   }
+  try {
+    const job = await db.job.findUnique({
+      where: {
+        id: jobId,
+        userId: user.id,
+      },
+    });
 
-  const validatedFields = JobSchema.safeParse(data);
+    if (!job) {
+      return { error: "Job not found" };
+    }
 
-  if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
-  }
+    const validatedFields = JobSchema.safeParse(data);
 
-  const {
-    title,
-    companyId,
-    description,
-    requirement,
-    salary,
-    location,
-    experienceLevel,
-    jobType,
-    position,
-  } = validatedFields.data;
+    if (!validatedFields.success) {
+      return { error: "Invalid Fields" };
+    }
 
-  await db.job.update({
-    where: {
-      id: jobId,
-      userId: user.id,
-    },
-    data: {
+    const {
       title,
       companyId,
       description,
@@ -329,9 +323,28 @@ export const updateJobAction = async (data: JobValues, jobId: string) => {
       experienceLevel,
       jobType,
       position,
-    },
-  });
+    } = validatedFields.data;
 
+    await db.job.update({
+      where: {
+        id: jobId,
+        userId: user.id,
+      },
+      data: {
+        title,
+        companyId,
+        description,
+        requirement,
+        salary,
+        location,
+        experienceLevel,
+        jobType,
+        position,
+      },
+    });
+  } catch (error) {
+    return { error: (error as Error)?.message || "Failed to update job" };
+  }
   revalidatePath("/recruiter/job");
   redirect("/recruiter/job");
 };

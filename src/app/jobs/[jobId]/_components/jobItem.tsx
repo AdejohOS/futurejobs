@@ -69,14 +69,16 @@ const JobItem = ({ job }: JobItemProps) => {
           </div>
         </div>
 
-        <ApplicationButton
-          jobId={job.id}
-          initialState={{
-            hasUserApplied: job.applications.some(
-              (application) => application.userId === user?.id
-            ),
-          }}
-        />
+        <div className="hidden sm:block">
+          <ApplicationButton
+            jobId={job.id}
+            initialState={{
+              hasUserApplied: job.applications.some(
+                (application) => application.userId === user?.id
+              ),
+            }}
+          />
+        </div>
       </div>
 
       <h2 className="text-xl font-semibold my-4">Job description</h2>
@@ -107,9 +109,19 @@ const JobItem = ({ job }: JobItemProps) => {
         </p>
         <div>
           <p className="font-semibold">Description:</p>
-          <Card className="p-4 max-w-[500px] text-muted-foreground whitespace-pre-line break-words">
-            <em>{job.description}</em>
+          <Card className="p-4 max-w-[700px]">
+            <article className="prose prose-stone">{job.description}</article>
           </Card>
+        </div>
+        <div className="sm:hidden">
+          <ApplicationButton
+            jobId={job.id}
+            initialState={{
+              hasUserApplied: job.applications.some(
+                (application) => application.userId === user?.id
+              ),
+            }}
+          />
         </div>
       </div>
     </Card>
