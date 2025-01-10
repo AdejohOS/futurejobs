@@ -45,7 +45,7 @@ const MyJobs = ({ job }: MyJobsProps) => {
       </div>
       <div>
         <h2 className="font-bold text-xl py-4">{job.title}</h2>
-        <p className="">{job.description.slice(0, 100)}...</p>
+        <p className="">{job.summary.slice(0, 100)}...</p>
         <div className="flex gap-2 my-2">
           <Badge className="text-orange-600 bg-orange-100 ">
             {job.position} Positions

@@ -37,7 +37,11 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-      <html lang="en">
+      <html
+        lang="en"
+        className="scroll-smooth antialiased"
+        suppressHydrationWarning
+      >
         <body
           className={cn(
             `flex min-h-screen flex-col antialiased font-sans`,

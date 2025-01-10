@@ -109,8 +109,11 @@ const JobItem = ({ job }: JobItemProps) => {
         </p>
         <div>
           <p className="font-semibold">Description:</p>
-          <Card className="p-4 max-w-[700px]">
-            <article className="prose prose-stone">{job.description}</article>
+          <Card className="p-4 ">
+            <article
+              className="prose prose-stone"
+              dangerouslySetInnerHTML={{ __html: job.description }}
+            ></article>
           </Card>
         </div>
         <div className="sm:hidden">

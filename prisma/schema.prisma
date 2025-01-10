@@ -89,6 +89,8 @@ model Company {
 model Job {
   id String @id @default(cuid())
   title String
+
+  summary String
   description String @db.Text
   requirement String
   salary Int

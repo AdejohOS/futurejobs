@@ -5,6 +5,7 @@ import {
   deleteJobAction,
   updateJobAction,
 } from "@/actions/actions";
+
 import AlertModal from "@/components/modals/alertModal";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -17,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -33,12 +35,33 @@ import { Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import dynamic from "next/dynamic";
+
+// Dynamically import the Editor component to ensure it only runs on the client side
+const Editor = dynamic(() => import("@/components/editor/editor"), {
+  ssr: false,
+});
 
 interface JobFormProps {
   initialData: Job;
   companies: Company[];
   jobId?: string;
 }
+
+export const defaultValue = {
+  type: "doc",
+  content: [
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: 'Type " / " for commands or start writing...',
+        },
+      ],
+    },
+  ],
+};
 
 export default function JobForm({
   initialData,
@@ -47,10 +70,13 @@ export default function JobForm({
 }: JobFormProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [description, setDescription] = useState<string>(" ");
+
   const router = useRouter();
 
   const title = initialData ? "Update job" : "Add a new job!";
-  const description = initialData
+  const descriptionText = initialData
     ? "Edit fields below to update job."
     : "Fill out the fields below to add a new job.";
   const action = initialData ? "Update" : "Create";
@@ -69,10 +95,11 @@ export default function JobForm({
         title: "",
         companyId: "",
         requirement: "",
+        summary: "",
+
         salary: 0,
         location: "",
         position: 0,
-        description: "",
         jobType: "",
         experienceLevel: 0,
       };
@@ -87,7 +114,7 @@ export default function JobForm({
   const createUpdateJob = async (data: JobValues) => {
     try {
       if (initialData) {
-        const response = await updateJobAction(jobId!, data);
+        await updateJobAction(jobId!, data);
 
         toast({
           title: toastMessage,
@@ -133,7 +160,7 @@ export default function JobForm({
       <div className="flex justify-between mb-4">
         <div>
           <h2 className="text-xl font-bold">{title}</h2>
-          <p>{description}</p>
+          <p>{descriptionText}</p>
         </div>
 
         {initialData && (
@@ -290,15 +317,16 @@ export default function JobForm({
 
             <FormField
               control={form.control}
-              name="description"
+              name="summary"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description:</FormLabel>
+                  <FormLabel>Job Summary:</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe this role..."
+                      placeholder="Write job summary"
                       {...field}
                       disabled={isLoading}
+                      className="resize-none"
                     />
                   </FormControl>
 
@@ -306,6 +334,25 @@ export default function JobForm({
                 </FormItem>
               )}
             />
+            <div className="prose prose-stone">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description:</FormLabel>
+                    <FormControl>
+                      <Editor
+                        initialValue={defaultValue}
+                        onChange={setDescription}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}

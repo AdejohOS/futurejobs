@@ -256,6 +256,7 @@ export const createJobAction = async (data: JobValues) => {
   const {
     title,
     companyId,
+    summary,
     description,
     requirement,
     salary,
@@ -269,6 +270,7 @@ export const createJobAction = async (data: JobValues) => {
     data: {
       title,
       companyId,
+      summary,
       description,
       requirement,
       salary,
@@ -316,6 +318,7 @@ export const updateJobAction = async (jobId: string, data: JobValues) => {
     const {
       title,
       companyId,
+      summary,
       description,
       requirement,
       salary,
@@ -333,6 +336,7 @@ export const updateJobAction = async (jobId: string, data: JobValues) => {
       data: {
         title,
         companyId,
+        summary,
         description,
         requirement,
         salary,

@@ -16,6 +16,7 @@ export interface Company {
 export interface Job {
   id: string;
   title: string;
+  summary: string;
   description: string;
   position: number;
   jobType: string;
