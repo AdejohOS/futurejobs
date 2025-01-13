@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         OR: [
           { title: { contains: q.toLowerCase() } },
           { location: { contains: q.toLowerCase() } },
-          { description: { contains: q.toLowerCase() } },
+          { content: { contains: q.toLowerCase() } },
         ],
       },
       include: {
