@@ -11,9 +11,8 @@ datasource db {
  
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  
 }
-
 
 model Account {
   id                 String  @id @default(cuid())
@@ -91,7 +90,7 @@ model Job {
   title String
 
   summary String
-  description String @db.Text
+  content String @db.Text
   requirement String
   salary Int
   experienceLevel Int

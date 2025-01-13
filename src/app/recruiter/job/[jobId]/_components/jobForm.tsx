@@ -30,12 +30,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { JobSchema, JobValues } from "@/lib/zodValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Job, Company } from "@prisma/client";
+import { Job, Company, Prisma } from "@prisma/client";
 import { Loader, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import dynamic from "next/dynamic";
+import { JSONContent } from "novel";
 
 // Dynamically import the Editor component to ensure it only runs on the client side
 const Editor = dynamic(() => import("@/components/editor/editor"), {
@@ -48,7 +49,7 @@ interface JobFormProps {
   jobId?: string;
 }
 
-export const defaultValue = {
+export const defaultValue: JSONContent = {
   type: "doc",
   content: [
     {
@@ -63,6 +64,102 @@ export const defaultValue = {
   ],
 };
 
+export const sampleValue = {
+  type: "doc",
+  content: [
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "This is an example for the editor",
+        },
+      ],
+    },
+    {
+      type: "heading",
+      attrs: {
+        level: 1,
+      },
+      content: [
+        {
+          type: "text",
+          text: "H1",
+        },
+      ],
+    },
+    {
+      type: "heading",
+      attrs: {
+        level: 2,
+      },
+      content: [
+        {
+          type: "text",
+          text: "H2",
+        },
+      ],
+    },
+    {
+      type: "heading",
+      attrs: {
+        level: 3,
+      },
+      content: [
+        {
+          type: "text",
+          text: "H3",
+        },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          text: "text",
+        },
+      ],
+    },
+    {
+      type: "bulletList",
+      attrs: {
+        tight: true,
+      },
+      content: [
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "new idea",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: "idea",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 export default function JobForm({
   initialData,
   companies,
@@ -71,7 +168,11 @@ export default function JobForm({
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [description, setDescription] = useState<string>(" ");
+  const [content, setContent] = useState<JSONContent>(
+    initialData && typeof initialData.content === "string"
+      ? JSON.parse(initialData.content)
+      : initialData?.content || defaultValue
+  );
 
   const router = useRouter();
 
@@ -90,13 +191,14 @@ export default function JobForm({
         salary: parseInt(String(initialData?.salary)),
         position: parseInt(String(initialData?.position)),
         experienceLevel: parseInt(String(initialData?.experienceLevel)),
+        content: initialData.content,
       }
     : {
         title: "",
         companyId: "",
         requirement: "",
         summary: "",
-
+        content: JSON.stringify(defaultValue),
         salary: 0,
         location: "",
         position: 0,
@@ -115,7 +217,7 @@ export default function JobForm({
     try {
       if (initialData) {
         await updateJobAction(jobId!, data);
-
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         toast({
           title: toastMessage,
         });
@@ -337,14 +439,21 @@ export default function JobForm({
             <div className="prose prose-stone">
               <FormField
                 control={form.control}
-                name="description"
+                name="content"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description:</FormLabel>
                     <FormControl>
                       <Editor
-                        initialValue={defaultValue}
-                        onChange={setDescription}
+                        initialValue={
+                          typeof field.value === "string"
+                            ? JSON.parse(field.value)
+                            : field.value || defaultValue
+                        }
+                        onChange={(value) => {
+                          field.onChange(JSON.stringify(value)); // Convert to string
+                          setContent(value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />

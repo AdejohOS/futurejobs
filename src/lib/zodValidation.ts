@@ -31,7 +31,7 @@ export const JobSchema = z.object({
   title: z.string().min(1, "Minimum of one character allowed"),
   companyId: z.string(),
   summary: z.string().max(50, "Summary should be less than 50 characters"),
-  description: z.string(),
+  content: z.string(),
   requirement: z.string(),
   salary: z.coerce.number().min(1),
   location: z.string(),

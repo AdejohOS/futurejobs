@@ -2,26 +2,28 @@
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { ApplicationInfo, Job } from "@/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Edit, Loader, SquareMousePointer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatNumber } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { format } from "date-fns";
-import { ApplyJobAction } from "@/actions/actions";
-import { toast } from "@/components/ui/use-toast";
 import ApplicationButton from "@/components/applicationButton";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
 import Link from "next/link";
 
+import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { ContentRenderer } from "./content-renderer";
+
 interface JobItemProps {
   job: Job;
 }
+
 const JobItem = ({ job }: JobItemProps) => {
   const user = useCurrentUser();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const parsedContent: JSONContent = JSON.parse(job.content);
   return (
     <Card className="p-4">
       {user && !user?.resumeUrl && (
@@ -110,10 +112,9 @@ const JobItem = ({ job }: JobItemProps) => {
         <div>
           <p className="font-semibold">Description:</p>
           <Card className="p-4 ">
-            <article
-              className="prose prose-stone"
-              dangerouslySetInnerHTML={{ __html: job.description }}
-            ></article>
+            <article className="prose prose-stone">
+              <ContentRenderer content={parsedContent} />
+            </article>
           </Card>
         </div>
         <div className="sm:hidden">

@@ -1,5 +1,5 @@
 import { UserRole } from "@prisma/client";
-
+import { JsonValue } from "@prisma/client/runtime/library";
 export type {
   Account,
   DefaultSession,
@@ -17,7 +17,7 @@ export interface Job {
   id: string;
   title: string;
   summary: string;
-  description: string;
+  content: string;
   position: number;
   jobType: string;
   experienceLevel: number;

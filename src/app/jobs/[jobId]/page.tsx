@@ -4,6 +4,9 @@ import JobItem from "./_components/jobItem";
 import { title } from "process";
 import { currentUser } from "@/lib/auth";
 
+import parse from "html-react-parser";
+import { notFound } from "next/navigation";
+
 const JobDetails = async ({ params }: { params: { jobId: string } }) => {
   const user = await currentUser();
   const job = await db.job.findUnique({
@@ -26,11 +29,13 @@ const JobDetails = async ({ params }: { params: { jobId: string } }) => {
     },
   });
 
+  if (!job) {
+    return notFound();
+  }
+
   return (
     <section>
-      <div className="container my-12 mx-auto">
-        <JobItem job={job!} />
-      </div>
+      <div className="container my-12 mx-auto">{<JobItem job={job} />}</div>
     </section>
   );
 };

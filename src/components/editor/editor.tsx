@@ -47,7 +47,7 @@ export const defaultEditorContent = {
 
 interface EditorProps {
   initialValue?: JSONContent;
-  onChange: (content: string) => void;
+  onChange: (content: JSONContent) => void;
 }
 
 export default function Editor({ initialValue, onChange }: EditorProps) {
@@ -89,7 +89,7 @@ export default function Editor({ initialValue, onChange }: EditorProps) {
             },
           }}
           onUpdate={({ editor }) => {
-            onChange(editor.getHTML());
+            onChange(editor.getJSON());
           }}
           slotAfter={<ImageResizer />}
         >
