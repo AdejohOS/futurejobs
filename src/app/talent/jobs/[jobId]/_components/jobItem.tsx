@@ -110,7 +110,7 @@ const JobItem = ({ job }: JobItemProps) => {
             <span className="font-semibold">Description:</span>
           </p>
           <Card className="p-4 max-w-[500px] text-muted-foreground whitespace-pre-line break-words">
-            {job.description}
+            {job.content}
           </Card>
         </div>
       </div>
