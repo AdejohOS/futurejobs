@@ -50,7 +50,7 @@ model User {
   accounts      Account[]
   role UserRole @default(USER)
 
-  bio String?
+  bio String? @db.Text
   resumeUrl String?
   githubUrl String?
   websiteUrl String?

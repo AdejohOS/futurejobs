@@ -10,7 +10,7 @@ export type UpdateRoleValues = z.infer<typeof UpdateRoleSchema>;
 export const UpdateUserSchema = z.object({
   name: z.string(),
   email: z.string(),
-  bio: z.string().optional(),
+  bio: z.string().max(1000, "Maximum of 1, 000 characters allowed!").optional(),
   resumeUrl: z.string().optional(),
   githubUrl: z.string().optional(),
   websiteUrl: z.string().optional(),
