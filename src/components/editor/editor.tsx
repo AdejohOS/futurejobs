@@ -56,15 +56,10 @@ export default function Editor({ initialValue, onChange }: EditorProps) {
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
 
-  //Apply Codeblock Highlighting on the HTML from editor.getHTML()
-  const highlightCodeblocks = (content: string) => {
-    const doc = new DOMParser().parseFromString(content, "text/html");
-    doc.querySelectorAll("pre code").forEach((el) => {
-      // @ts-ignore
-      // https://highlightjs.readthedocs.io/en/latest/api.html?highlight=highlightElement#highlightelement
-      hljs.highlightElement(el);
+  const applyCodeHighlighting = (content: JSONContent) => {
+    document.querySelectorAll("pre code").forEach((block) => {
+      hljs.highlightElement(block);
     });
-    return new XMLSerializer().serializeToString(doc);
   };
 
   return (
