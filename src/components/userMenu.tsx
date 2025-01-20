@@ -6,11 +6,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Settings, User } from "lucide-react";
+import { Briefcase, Building, LogOut, User } from "lucide-react";
 import { FaUser } from "react-icons/fa";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
@@ -47,6 +45,23 @@ const UserMenu = () => {
               Profile
             </Link>
           </DropdownMenuItem>
+
+          <div className="md:hidden">
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/recruiter/company" className="flex">
+                {" "}
+                <Building className="h-4 w-4 mr-2" />
+                Companies
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/recruiter/job" className="flex">
+                {" "}
+                <Briefcase className="h-4 w-4 mr-2" />
+                Jobs
+              </Link>
+            </DropdownMenuItem>
+          </div>
 
           <DropdownMenuItem
             onClick={() => {
