@@ -3,6 +3,8 @@ import {
   ArrowLeft,
   Briefcase,
   Building,
+  Check,
+  ChevronsUpDown,
   Loader,
   LogIn,
   NotebookPen,
@@ -20,11 +22,36 @@ import { Input } from "./ui/input";
 import { useCurrentUser } from "@/hooks/getCurrentUser";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "./ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
+const links = [
+  {
+    value: "companies",
+    label: "Companies",
+    href: "/recruiter/company",
+  },
+  {
+    value: "jobs",
+    label: "Jobs",
+    href: "/recruiter/job",
+  },
+];
 const Header = () => {
   const user = useCurrentUser();
   const pathName = usePathname();
   const router = useRouter();
+
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
@@ -105,16 +132,77 @@ const Header = () => {
 
           {user?.role === "RECRUITER" && (
             <>
-              <Link href="/recruiter/company">
-                <Button variant="secondary" className="flex gap-2 drop-shadow">
-                  <Building className="shrink-0 h-4 w-4" /> Companies
-                </Button>
-              </Link>
-              <Link href="/recruiter/job">
-                <Button variant="theme" className="flex gap-2 drop-shadow">
-                  <Briefcase className="shrink-0 h-4 w-4" /> Jobs
-                </Button>
-              </Link>
+              <div className="hidden md:flex gap-4">
+                <Link href="/recruiter/company">
+                  <Button
+                    variant="secondary"
+                    className="flex gap-2 drop-shadow"
+                  >
+                    <Building className="shrink-0 h-4 w-4" /> Companies
+                  </Button>
+                </Link>
+                <Link href="/recruiter/job">
+                  <Button variant="theme" className="flex gap-2 drop-shadow">
+                    <Briefcase className="shrink-0 h-4 w-4" /> Jobs
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="md:hidden">
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-[200px] justify-between"
+                    >
+                      {value
+                        ? links.find((link) => link.value === value)?.label
+                        : "Recruiters Link..."}
+                      <ChevronsUpDown className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search framework..."
+                        className="h-9"
+                      />
+                      <CommandList>
+                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandGroup>
+                          {links.map((link) => (
+                            <CommandItem
+                              key={link.value}
+                              value={link.value}
+                              onSelect={(currentValue) => {
+                                setValue(
+                                  currentValue === value ? "" : currentValue
+                                );
+                                setOpen(false);
+                              }}
+                              onClick={() => {
+                                router.push(link.href);
+                              }}
+                            >
+                              {link.label}
+                              <Check
+                                className={cn(
+                                  "ml-auto",
+                                  value === link.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </>
           )}
 
