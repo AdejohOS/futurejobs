@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import FooterLinks from "./footer-links";
 
 const Footer = () => {
   return (
@@ -45,27 +46,7 @@ const Footer = () => {
               futurejobs.com
             </Link>
           </div>
-          <div>
-            <h3 className="text-gray-100 font-bold  text-xl">Links</h3>
-            <Link
-              href="/auth/login"
-              className="flex items-center gap-2 text-gray-100"
-            >
-              <LogIn className="size-4" /> Login/SignUp
-            </Link>
-            <Link
-              href="/auth/login"
-              className="flex items-center gap-2 text-gray-100"
-            >
-              <Briefcase className="size-4" /> Jobs
-            </Link>
-            <Link
-              href="/auth/login"
-              className="flex items-center gap-2 text-gray-100"
-            >
-              <User className="size-4" /> Profile
-            </Link>
-          </div>
+          <FooterLinks />
           <div>
             <h3 className="text-gray-100 font-bold text-xl">Newsletter</h3>
             <p className="text-sm text-gray-100">
