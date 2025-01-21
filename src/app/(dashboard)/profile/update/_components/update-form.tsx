@@ -62,7 +62,7 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
       toast({
         title: "Profile updated Successfully!",
       });
-      router.push("/profie");
+      router.push("/profile");
     } else {
       toast({
         title: "Something went wrong!",
