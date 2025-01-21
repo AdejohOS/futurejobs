@@ -34,9 +34,7 @@ export const CellAction = ({ data }: CellActionProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() => router.push(`/talent/jobs/${data.id}`)}
-          >
+          <DropdownMenuItem onClick={() => router.push(`/jobs/${data.id}`)}>
             <Eye className="mr-2 h-4 w-4" /> View job
           </DropdownMenuItem>
         </DropdownMenuContent>
