@@ -69,7 +69,7 @@ model User {
 model Company {
   id String @id @default(cuid())
   name String
-  about String?
+  about String? @db.Text
   website String?
   address String?
   location String?
@@ -89,9 +89,9 @@ model Job {
   id String @id @default(cuid())
   title String
 
-  summary String
+  summary String @db.Text
   content String @db.Text
-  requirement String
+  requirement String @db.Text
   salary Int
   experienceLevel Int
   location String

@@ -32,7 +32,7 @@ export const updateUserAction = async (values: UpdateUserValues) => {
     }
 
     const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
-    const job = await db.user.update({
+    const updatedUser = await db.user.update({
       where: {
         id: user.id,
       },
@@ -43,11 +43,11 @@ export const updateUserAction = async (values: UpdateUserValues) => {
         websiteUrl,
       },
     });
-  } catch (error) {
-    return { error: (error as Error)?.message || "Failed to update user" };
-  } finally {
+
     revalidatePath("/profile");
     redirect("/profile");
+  } catch (error) {
+    return { error: (error as Error)?.message || "Failed to update user" };
   }
 };
 

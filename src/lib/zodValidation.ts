@@ -30,7 +30,7 @@ export type CompanyValues = z.infer<typeof CompanySchema>;
 export const JobSchema = z.object({
   title: z.string().min(1, "Minimum of one character allowed"),
   companyId: z.string(),
-  summary: z.string().max(50, "Summary should be less than 50 characters"),
+  summary: z.string().max(200, "Summary should be less than 200 characters"),
   content: z.string(),
   requirement: z.string(),
   salary: z.coerce.number().min(1),
