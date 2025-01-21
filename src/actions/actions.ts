@@ -45,7 +45,6 @@ export const updateUserAction = async (values: UpdateUserValues) => {
       },
     });
 
-    revalidatePath("/profile");
     return { success: true, user: updatedUser };
   } catch (error) {
     return { error: (error as Error)?.message || "Failed to update user" };

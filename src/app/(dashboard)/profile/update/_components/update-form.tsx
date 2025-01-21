@@ -62,6 +62,7 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
       toast({
         title: "Profile updated Successfully!",
       });
+
       router.push("/profile");
     } else {
       toast({
