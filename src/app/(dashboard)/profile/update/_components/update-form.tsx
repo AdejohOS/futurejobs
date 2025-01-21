@@ -57,10 +57,18 @@ const UpdateForm = ({ initialData }: UpdateFormProps) => {
 
   const isLoading = form.formState.isSubmitting;
   const updateUser = async (values: UpdateUserValues) => {
-    await updateUserAction(values);
-    toast({
-      title: "Profile updated Successfully!",
-    });
+    const result = await updateUserAction(values);
+    if (result?.success) {
+      toast({
+        title: "Profile updated Successfully!",
+      });
+      router.push("/profie");
+    } else {
+      toast({
+        title: "Something went wrong!",
+        description: "Please try again.",
+      });
+    }
   };
 
   useEffect(() => {

@@ -26,26 +26,30 @@ export const updateUserAction = async (values: UpdateUserValues) => {
     return { error: "Forbidden server action." };
   }
 
-  const validatedFields = UpdateUserSchema.safeParse(values);
-  if (!validatedFields.success) {
-    return { error: "Invalid Fields" };
+  try {
+    const validatedFields = UpdateUserSchema.safeParse(values);
+    if (!validatedFields.success) {
+      return { error: "Invalid Fields" };
+    }
+
+    const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
+    const updatedUser = await db.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        bio,
+        resumeUrl,
+        githubUrl,
+        websiteUrl,
+      },
+    });
+
+    revalidatePath("/profile");
+    return { success: true, user: updatedUser };
+  } catch (error) {
+    return { error: (error as Error)?.message || "Failed to update user" };
   }
-
-  const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
-  await db.user.update({
-    where: {
-      id: user.id,
-    },
-    data: {
-      bio,
-      resumeUrl,
-      githubUrl,
-      websiteUrl,
-    },
-  });
-
-  revalidatePath("/profile");
-  redirect("/profile");
 };
 
 // Create company
