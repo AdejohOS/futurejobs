@@ -32,7 +32,7 @@ export const updateUserAction = async (values: UpdateUserValues) => {
     }
 
     const { bio, resumeUrl, githubUrl, websiteUrl } = validatedFields.data;
-    const updatedUser = await db.user.update({
+    await db.user.update({
       where: {
         id: user.id,
       },
